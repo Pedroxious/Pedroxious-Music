@@ -1,0 +1,15 @@
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Agents config (local)
+.agents/
+
+# Python cache
+__pycache__/
+*.pyc
