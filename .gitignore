@@ -3,6 +3,9 @@
 Thumbs.db
 desktop.ini
 
+# Stray files
+nome 'pedro'.py
+
 # IDE / Editor
 .vscode/
 .idea/

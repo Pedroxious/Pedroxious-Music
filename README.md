@@ -22,6 +22,13 @@
   <img src="https://img.shields.io/badge/status-Em%20Desenvolvimento-36e2ec?style=flat-square" alt="Status" />
 </p>
 
+<p align="center">
+  <br />
+  <a href="https://pedroxious.github.io/Pedroxious-Music/">
+    <img src="https://img.shields.io/badge/▶%20ACESSAR%20DEMONSTRAÇÃO-36e2ec?style=for-the-badge&logoColor=white&labelColor=0d1117" alt="Demo" height="45" />
+  </a>
+</p>
+
 ---
 
 ## 📖 Sobre o Projeto
