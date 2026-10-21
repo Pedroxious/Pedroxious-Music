@@ -3475,611 +3475,1796 @@ const RADIO_API_SERVERS = [
 ];
 let currentRadioServerIdx = 0;
 
-let radioActiveFilter = 'all'; // 'all' | país | gênero
+let radioSelectedCountry = 'all'; // 'all' (default: Brasil no topo) ou id do país selecionado
+let radioSelectedGenre = 'all';     // 'all' (default: todos os gêneros) ou gênero específico
 let radioSearchQuery = '';
 let radioSearchTimeout = null;
 
-// Rádios Curadas Organizadas por País / Localização (Prioridade: Brasil no Topo, seguido de EUA, Reino Unido, Portugal, Espanha, etc.)
+// Rádios Curadas e Verificadas Organizadas por País (Prioridade: Brasil no Topo, seguido de EUA, UK, Portugal, Espanha, França, Alemanha, Itália, Canadá e Argentina)
 const CURATED_RADIO_SECTIONS = [
     {
-        id: "brasil",
-        country: "Brasil",
-        flag: "🇧🇷",
-        code: "BR",
-        stations: [
+        "id": "brasil",
+        "country": "Brasil",
+        "flag": "🇧🇷",
+        "code": "BR",
+        "stations": [
             {
-                name: "Alpha FM 101.7",
-                stationuuid: "curated_alpha_fm",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "pop,adult contemporary,hits",
-                bitrate: 128,
-                favicon: "https://cdn-profiles.tunein.com/s8129/images/logod.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_ALPHAFMAAC.aac",
-                color: "#1e3a8a",
-                location: "São Paulo, SP"
+                "name": "Rádio Antena 1 94.7 FM",
+                "stationuuid": "570cc99a-9159-4d91-9a8f-96ddb5b30797",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "adult,flashback",
+                "bitrate": 96,
+                "favicon": "https://img.radios.com.br/radio/lg/radio9505_1574106966.jpg",
+                "url_resolved": "https://antenaone.crossradio.com.br/stream/1;",
+                "url": "https://antenaone.crossradio.com.br/stream/1;",
+                "color": "#1e3a8a"
             },
             {
-                name: "Antena 1 94.7 FM",
-                stationuuid: "curated_antena1",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "adult contemporary,jazz,pop",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio9505_1574170366.png",
-                url_resolved: "https://antenaone.crossradio.com.br/stream/1;",
-                color: "#0369a1",
-                location: "São Paulo, SP"
+                "name": "Rádio Mix 106.3 FM",
+                "stationuuid": "901c92bd-a757-449a-b8ce-652b079fd38a",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "chr,pop-rock,youth",
+                "bitrate": 64,
+                "favicon": "https://img.radios.com.br/radio/lg/radio13955_1720711597.png",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/MIXFM_SAOPAULOAAC.aac",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/MIXFM_SAOPAULOAAC.aac",
+                "color": "#0369a1"
             },
             {
-                name: "Rádio Mix FM 106.3",
-                stationuuid: "curated_mix_fm",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "pop,rock,jovem,hits",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio13955_1720541703.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/MIXFM_SPAAC.aac",
-                color: "#b91c1c",
-                location: "São Paulo, SP"
+                "name": "Bossa Jazz Brasil",
+                "stationuuid": "7ada8a81-5ae1-418c-8f18-51d2f38d86a4",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "bossa nova,jazz,mpb",
+                "bitrate": 64,
+                "favicon": "https://bossajazzbrasil.com/wp-content/uploads/2020/12/cropped-bjs-app-180x180.png",
+                "url_resolved": "https://centova5.transmissaodigital.com:20104/live",
+                "url": "https://centova5.transmissaodigital.com:20104/live",
+                "color": "#0f766e"
             },
             {
-                name: "89 FM A Rádio Rock",
-                stationuuid: "curated_89_rock",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "rock,classic rock,alternative",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio91_1603729864.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_89FMAAC.aac",
-                color: "#18181b",
-                location: "São Paulo, SP"
+                "name": "Rádio Saudade FM 99.7",
+                "stationuuid": "5dcbb03d-423a-4f97-8af5-b95981094c69",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "adult,classic hits,flashback",
+                "bitrate": 64,
+                "favicon": "https://img.radios.com.br/radio/lg/radio8_1626274312.png",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/SAUDADE_FMAAC.aac",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SAUDADE_FMAAC.aac",
+                "color": "#15803d"
             },
             {
-                name: "Band FM 96.1",
-                stationuuid: "curated_band_fm",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "pagode,sertanejo,popular",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio87_1603728639.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_BANDFMAAC.aac",
-                color: "#15803d",
-                location: "São Paulo, SP"
+                "name": "Antena 1 São Paulo, SP (ZYD823 94,7 MHz FM)",
+                "stationuuid": "963fa65f-0601-11e8-ae97-52543be04c81",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "adult contemporary,jazz,pop",
+                "bitrate": 96,
+                "favicon": "",
+                "url_resolved": "http://antena1.newradio.it/stream?ext=.mp3",
+                "url": "http://antena1.newradio.it/stream?ext=.mp3",
+                "color": "#b91c1c"
             },
             {
-                name: "Rádio Saudade FM 99.7",
-                stationuuid: "curated_saudade_fm",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "flashback,anos 70,anos 80,classicos",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio8_1626274384.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/SAUDADE_FMAAC.aac",
-                color: "#4338ca",
-                location: "Santos, SP"
+                "name": "bandnews fm sp",
+                "stationuuid": "4a17b7fa-42a0-4c32-bdc6-dc1c59066c96",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "news,news talk",
+                "bitrate": 64,
+                "favicon": "https://img.radios.com.br/radio/lg/radio24477_1579261235.jpg",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/BANDNEWSFM_SPAAC.m3u8",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/BANDNEWSFM_SPAAC.m3u8",
+                "color": "#7c2d12"
             },
             {
-                name: "Jovem Pan FM",
-                stationuuid: "curated_jovem_pan",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "pop,jovem,noticias,talk",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio92_1603730248.png",
-                url_resolved: "https://live.paineldj.com.br/proxy/jfloripa?mp=/stream",
-                color: "#b91c1c",
-                location: "São Paulo, SP"
+                "name": "Rádio Jovem Pan 100.9 FM",
+                "stationuuid": "8e9b5ba4-dcc1-4dad-8ddf-e7cc04c33a00",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "entertainment,journalism,music",
+                "bitrate": 128,
+                "favicon": "https://img.radios.com.br/radio/lg/radio8829_1708517690.png",
+                "url_resolved": "https://stream.zeno.fm/c45wbq2us3buv",
+                "url": "https://stream.zeno.fm/c45wbq2us3buv",
+                "color": "#4338ca"
             },
             {
-                name: "CBN São Paulo 90.5 FM",
-                stationuuid: "curated_cbn_sp",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "news,talk,jornalismo,esportes",
-                bitrate: 96,
-                favicon: "https://img.radios.com.br/radio/lg/radio90_1603729571.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_CBN_SPAAC.aac",
-                color: "#dc2626",
-                location: "São Paulo, SP"
+                "name": "Alpha FM 101.7 MHz (São Paulo",
+                "stationuuid": "447a1a5f-aee6-4b21-b85f-10ceb1896ad3",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "light,misc,portuguese music",
+                "bitrate": 128,
+                "favicon": "https://cdn-profiles.tunein.com/s8129/images/logod.jpg",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_ALPHAFM_ADP.aac",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_ALPHAFM_ADP.aac",
+                "color": "#6b21a8"
             },
             {
-                name: "Bossa Jazz Brasil",
-                stationuuid: "curated_bossa_jazz",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "bossa nova,jazz,mpb,instrumental",
-                bitrate: 128,
-                favicon: "https://bossajazzbrasil.com/wp-content/uploads/2021/08/logo-bossa-jazz-brasil.png",
-                url_resolved: "https://centova5.transmissaodigital.com:20104/live",
-                color: "#7c2d12",
-                location: "Santos, SP"
+                "name": "Rádio Itatiaia 95.7 FM",
+                "stationuuid": "f66f08c3-1616-4dd6-a54f-75aa29aa8249",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "news,soccer,sports",
+                "bitrate": 64,
+                "favicon": "https://img.radios.com.br/radio/lg/radio14_1646746883.jpeg",
+                "url_resolved": "https://8903.brasilstream.com.br/stream",
+                "url": "https://8903.brasilstream.com.br/stream",
+                "color": "#1e3a8a"
             },
             {
-                name: "Metropolitana 98.5 FM",
-                stationuuid: "curated_metropolitana",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "pop,funk,dance,jovem",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio14_1603726715.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/METROPOLITANA_FMAAC.aac",
-                color: "#1d4ed8",
-                location: "São Paulo, SP"
+                "name": "Jovem Pan FM",
+                "stationuuid": "bf64595a-eed4-49de-94e5-87c1bb813a74",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "chr,contemporary hits radio,dance",
+                "bitrate": 128,
+                "favicon": "https://jpimg.com.br/uploads/2024/02/avatar-florianopolis-rgb-500x500.png",
+                "url_resolved": "https://live.paineldj.com.br/proxy/jfloripa?mp=/stream",
+                "url": "https://live.paineldj.com.br/proxy/jfloripa?mp=/stream",
+                "color": "#0369a1"
             },
             {
-                name: "BandNews FM 96.9",
-                stationuuid: "curated_bandnews",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "news,jornalismo,noticias",
-                bitrate: 96,
-                favicon: "https://img.radios.com.br/radio/lg/radio94_1603730872.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_BANDNEWSFMAAC.aac",
-                color: "#b91c1c",
-                location: "São Paulo, SP"
+                "name": "Ouro Verde FM Easy 105.5",
+                "stationuuid": "6116adf7-d0c7-49ca-91d9-c9e5553d250c",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "brasil,brazilian music,classic hits",
+                "bitrate": 64,
+                "favicon": "https://ouroverdefm.com.br/wp-content/uploads/2022/11/favicon-150x150.png",
+                "url_resolved": "https://8522.brasilstream.com.br/stream",
+                "url": "https://8522.brasilstream.com.br/stream",
+                "color": "#0f766e"
             },
             {
-                name: "Nativa FM 95.3",
-                stationuuid: "curated_nativa_fm",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "sertanejo,romantico,popular",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio12_1603726487.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_NATIVAFMAAC.aac",
-                color: "#7e22ce",
-                location: "São Paulo, SP"
+                "name": "80 Hits Brasil",
+                "stationuuid": "4c66701a-2486-421e-87c7-a53879b069c1",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "80's,80s,mpb",
+                "bitrate": 96,
+                "favicon": "https://i.ibb.co/5x1yHdR0/LOGO2025.png",
+                "url_resolved": "https://stm5.painelcast.com:7662/stream",
+                "url": "https://stm5.painelcast.com:7662/stream",
+                "color": "#15803d"
             },
             {
-                name: "Kiss FM 92.5",
-                stationuuid: "curated_kiss_fm",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "rock,classic rock,hard rock",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio24_1603727670.png",
-                url_resolved: "https://caikron.radios.net:8022/stream",
-                color: "#991b1b",
-                location: "São Paulo, SP"
+                "name": "Sertaneja 106.7",
+                "stationuuid": "00bc4f1d-050c-49ae-bc42-a8aaa5d0ff5b",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "country,sertanejo",
+                "bitrate": 128,
+                "favicon": "https://assets.clubefm.com.br/uploads/site/logo/2/106-sertaneja-4fff3e1f118ab621432fa4d74136e042e86b6eedbabf561ded0dfd61123d980e.png",
+                "url_resolved": "https://sc4s.cdn.upx.com:8067/stream",
+                "url": "https://sc4s.cdn.upx.com:8067/stream",
+                "color": "#b91c1c"
             },
             {
-                name: "Novabrasil FM 89.7",
-                stationuuid: "curated_novabrasil",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "mpb,musica brasileira,bossa",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio11_1603726359.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/NOVABRASIL_FMAAC.aac",
-                color: "#059669",
-                location: "São Paulo, SP"
+                "name": "BR",
+                "stationuuid": "195f2990-e0d3-4b34-8aab-5b173ddb6c6e",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "classic rock,hard rock,heavy metal",
+                "bitrate": 128,
+                "favicon": "https://cdn.onlineradiobox.com/img/l/5/94775.v6.png",
+                "url_resolved": "https://stream.zeno.fm/nbq1aq62gd0uv",
+                "url": "https://stream.zeno.fm/nbq1aq62gd0uv",
+                "color": "#7c2d12"
             },
             {
-                name: "Gazeta FM 88.1",
-                stationuuid: "curated_gazeta_fm",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "pop,hits,sertanejo",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio95_1603730999.png",
-                url_resolved: "https://26683.live.streamtheworld.com:443/GAZETA_FMAAC.aac",
-                color: "#ea580c",
-                location: "São Paulo, SP"
+                "name": "Antena 1 FM 94.7 São Paulo",
+                "stationuuid": "531fced7-b22b-11e8-afe1-52543be04c81",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "adult contemporary,lite",
+                "bitrate": 96,
+                "favicon": "https://www.antena1.com.br/apple-touch-icon.png",
+                "url_resolved": "http://antena1.newradio.it/stream",
+                "url": "http://antena1.newradio.it/stream",
+                "color": "#4338ca"
             },
             {
-                name: "Rádio Disney 91.3",
-                stationuuid: "curated_disney_fm",
-                country: "Brasil",
-                countrycode: "BR",
-                tags: "pop,teen,hits",
-                bitrate: 128,
-                favicon: "https://img.radios.com.br/radio/lg/radio15_1603726839.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/DISNEY_BRAAC.aac",
-                color: "#0284c7",
-                location: "São Paulo, SP"
+                "name": "Smooth Jazz Lounge",
+                "stationuuid": "ef07dbb2-1176-4b09-bb87-9e841300c3cf",
+                "country": "Brasil",
+                "countrycode": "BR",
+                "tags": "jazz,smooth jazz,smooth lounge",
+                "bitrate": 128,
+                "favicon": "https://www.vip-radios.fm/favicon.ico",
+                "url_resolved": "https://radio4.vip-radios.fm:18060/stream-128kmp3-SmoothJazzLounge",
+                "url": "https://radio4.vip-radios.fm:18060/stream-128kmp3-SmoothJazzLounge",
+                "color": "#6b21a8"
             }
         ]
     },
     {
-        id: "estados_unidos",
-        country: "Estados Unidos",
-        flag: "🇺🇸",
-        code: "US",
-        stations: [
+        "id": "estados_unidos",
+        "country": "Estados Unidos",
+        "flag": "🇺🇸",
+        "code": "US",
+        "stations": [
             {
-                name: "181.FM - The Eagle",
-                stationuuid: "curated_181_eagle",
-                country: "Estados Unidos",
-                countrycode: "US",
-                tags: "classic rock,rock,70s,80s",
-                bitrate: 128,
-                favicon: "https://images.live-radio.net/181fm-the-eagle.png",
-                url_resolved: "https://listen.181fm.com/181-eagle_128k.mp3",
-                color: "#b45309",
-                location: "Waynesboro, VA"
+                "name": "Classic Vinyl HD",
+                "stationuuid": "d1a54d2e-623e-4970-ab11-35f7b56c5ec3",
+                "country": "Estados Unidos",
+                "countrycode": "US",
+                "tags": "1930,1940,1950",
+                "bitrate": 320,
+                "favicon": "https://icecast.walmradio.com:8443/classic.jpg",
+                "url_resolved": "https://icecast.walmradio.com:8443/classic",
+                "url": "https://icecast.walmradio.com:8443/classic",
+                "color": "#1e3a8a"
             },
             {
-                name: "Smooth Jazz 247",
-                stationuuid: "curated_smooth_jazz",
-                country: "Estados Unidos",
-                countrycode: "US",
-                tags: "jazz,smooth jazz,relax,instrumental",
-                bitrate: 128,
-                favicon: "https://static.mytuner.mobi/media/tvos_radios/7n79m3767nsu.jpg",
-                url_resolved: "https://streaming.exclusive.radio/er/smoothjazz/icecast.audio",
-                color: "#4f46e5",
-                location: "New York, NY"
+                "name": "101 SMOOTH JAZZ",
+                "stationuuid": "d28420a4-eccf-47a2-ace1-088c7e7cb7e0",
+                "country": "Estados Unidos",
+                "countrycode": "US",
+                "tags": "easy listening,jazz,smooth jazz",
+                "bitrate": 192,
+                "favicon": "http://101smoothjazz.com/favicon.ico",
+                "url_resolved": "http://jking.cdnstream1.com/b22139_128mp3",
+                "url": "http://www.101smoothjazz.com/101-smoothjazz.m3u",
+                "color": "#0369a1"
             },
             {
-                name: "KEXP 90.3 FM",
-                stationuuid: "curated_kexp",
-                country: "Estados Unidos",
-                countrycode: "US",
-                tags: "alternative,indie,rock,eclectic",
-                bitrate: 160,
-                favicon: "https://kexp.org/static/assets/img/kexp-logo-social.png",
-                url_resolved: "https://kexp.streamguys1.com/kexp160.mp3",
-                color: "#e11d48",
-                location: "Seattle, WA"
+                "name": "Radio Paradise Main Mix (EU) 320k AAC",
+                "stationuuid": "9617a958-0601-11e8-ae97-52543be04c81",
+                "country": "Estados Unidos",
+                "countrycode": "US",
+                "tags": "california,eclectic,free",
+                "bitrate": 320,
+                "favicon": "https://radioparadise.com/apple-touch-icon.png",
+                "url_resolved": "http://stream-uk1.radioparadise.com/aac-320",
+                "url": "http://stream-uk1.radioparadise.com/aac-320",
+                "color": "#0f766e"
             },
             {
-                name: "181.FM - Awesome 80's",
-                stationuuid: "curated_181_80s",
-                country: "Estados Unidos",
-                countrycode: "US",
-                tags: "flashback,80s,pop,retro",
-                bitrate: 128,
-                favicon: "https://static.mytuner.mobi/media/tvos_radios/b9f8d9760773.jpg",
-                url_resolved: "https://listen.181fm.com/181-awesome80s_128k.mp3",
-                color: "#db2777",
-                location: "Waynesboro, VA"
+                "name": "102.7 KIIS FM",
+                "stationuuid": "c76686ca-a8b9-4db9-9839-1470c9599623",
+                "country": "Estados Unidos",
+                "countrycode": "US",
+                "tags": "pop,top 40",
+                "bitrate": 128,
+                "favicon": "https://i.iheart.com/v3/re/assets.brands/2ebe753539305728784b0f3b178eae45?ops=new(),flood(%22white%22),swap(),merge(%22over%22),gravity(%22center%22),contain(167,167),quality(80),format(%22png%22)",
+                "url_resolved": "https://stream.revma.ihrhls.com/zc185",
+                "url": "https://stream.revma.ihrhls.com/zc185",
+                "color": "#15803d"
             },
             {
-                name: "SomaFM - Groove Salad",
-                stationuuid: "curated_groove_salad",
-                country: "Estados Unidos",
-                countrycode: "US",
-                tags: "electronic,ambient,chillout,downtempo",
-                bitrate: 128,
-                favicon: "https://somafm.com/img/groovesalad120.png",
-                url_resolved: "https://ice1.somafm.com/groovesalad-128-mp3",
-                color: "#059669",
-                location: "San Francisco, CA"
+                "name": "CNN",
+                "stationuuid": "33178054-56cd-449c-8cf7-412cc7be936a",
+                "country": "Estados Unidos",
+                "countrycode": "US",
+                "tags": "news",
+                "bitrate": 96,
+                "favicon": "https://www.cnn.com/media/sites/cnn/favicon.ico",
+                "url_resolved": "https://tunein.cdnstream1.com/2868_96.mp3",
+                "url": "https://tunein.cdnstream1.com/2868_96.mp3",
+                "color": "#b91c1c"
             },
             {
-                name: "Power 106 FM Los Angeles",
-                stationuuid: "curated_power_106",
-                country: "Estados Unidos",
-                countrycode: "US",
-                tags: "hip-hop,rap,r&b,urban",
-                bitrate: 128,
-                favicon: "https://static.mytuner.mobi/media/tvos_radios/872kydc66szn.jpg",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/KPWRFMAAC.aac",
-                color: "#d97706",
-                location: "Los Angeles, CA"
+                "name": "SomaFM Groove Salad (128k MP3)",
+                "stationuuid": "960cf833-0601-11e8-ae97-52543be04c81",
+                "country": "Estados Unidos",
+                "countrycode": "US",
+                "tags": "ambient,chillout,downtempo",
+                "bitrate": 128,
+                "favicon": "https://somafm.com/img3/groovesalad-400.jpg",
+                "url_resolved": "https://ice5.somafm.com/groovesalad-128-mp3",
+                "url": "https://somafm.com/groovesalad.pls",
+                "color": "#7c2d12"
             },
             {
-                name: "WNYC 93.9 FM",
-                stationuuid: "curated_wnyc",
-                country: "Estados Unidos",
-                countrycode: "US",
-                tags: "news,talk,npr,jornalismo",
-                bitrate: 96,
-                favicon: "https://media.wnyc.org/i/300/300/c/80/1/wnyc_square_logo.png",
-                url_resolved: "https://fm939.wnyc.org/wnycfm-web.aac",
-                color: "#dc2626",
-                location: "New York, NY"
+                "name": "Fox News Radio",
+                "stationuuid": "510aeeac-e7a0-41c2-aea2-e572e811ffe7",
+                "country": "Estados Unidos",
+                "countrycode": "US",
+                "tags": "news",
+                "bitrate": 64,
+                "favicon": "https://static.foxnews.com/radio.foxnews.com/content/uploads/2017/10/default_logo-150x150.png",
+                "url_resolved": "https://live.amperwave.net/direct/foxnewsradio-foxnewsradioaac-imc?source=fnr.web",
+                "url": "https://live.amperwave.net/direct/foxnewsradio-foxnewsradioaac-imc?source=fnr.web",
+                "color": "#4338ca"
             },
             {
-                name: "Big R Radio - 90s Alternative",
-                stationuuid: "curated_bigr_90s",
-                country: "Estados Unidos",
-                countrycode: "US",
-                tags: "rock,90s,grunge,alternative",
-                bitrate: 128,
-                favicon: "https://static.mytuner.mobi/media/tvos_radios/478637500.jpg",
-                url_resolved: "https://shoutcast.bigrradio.com/90salternative",
-                color: "#475569",
-                location: "United States"
+                "name": ".977 80s",
+                "stationuuid": "961b7325-0601-11e8-ae97-52543be04c81",
+                "country": "Estados Unidos",
+                "countrycode": "US",
+                "tags": "80s",
+                "bitrate": 128,
+                "favicon": "",
+                "url_resolved": "http://26433.live.streamtheworld.com:3690/977_80_SC",
+                "url": "http://playerservices.streamtheworld.com/pls/977_80.pls",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "Ambient Sleeping Pill",
+                "stationuuid": "961fa288-0601-11e8-ae97-52543be04c81",
+                "country": "Estados Unidos",
+                "countrycode": "US",
+                "tags": "ambient,meditation,sleep",
+                "bitrate": 256,
+                "favicon": "",
+                "url_resolved": "http://radio.stereoscenic.com/asp-h",
+                "url": "http://radio.stereoscenic.com/asp-h",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "NPR 24 Hour Program Stream",
+                "stationuuid": "7ba4c184-fc2b-11e9-bbf2-52543be04c81",
+                "country": "Estados Unidos",
+                "countrycode": "US",
+                "tags": "news,news talk,political talk",
+                "bitrate": 96,
+                "favicon": "https://static-assets.npr.org/static/images/favicon/favicon-96x96.png",
+                "url_resolved": "http://npr-ice.streamguys1.com/live.mp3",
+                "url": "http://npr-ice.streamguys1.com/live.mp3",
+                "color": "#0369a1"
             }
         ]
     },
     {
-        id: "reino_unido",
-        country: "Reino Unido",
-        flag: "🇬🇧",
-        code: "GB",
-        stations: [
+        "id": "reino_unido",
+        "country": "Reino Unido",
+        "flag": "🇬🇧",
+        "code": "GB",
+        "stations": [
             {
-                name: "BBC Radio 1",
-                stationuuid: "curated_bbc_1",
-                country: "Reino Unido",
-                countrycode: "GB",
-                tags: "pop,dance,chart,electronic",
-                bitrate: 128,
-                favicon: "https://sounds.files.bbci.co.uk/3.6.4/networks/bbc_radio_one/colour_default.svg",
-                url_resolved: "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one",
-                color: "#0284c7",
-                location: "London, UK"
+                "name": "BBC World Service",
+                "stationuuid": "98adecf7-2683-4408-9be7-02d3f9098eb8",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "news,talk",
+                "bitrate": 56,
+                "favicon": "http://cdn-profiles.tunein.com/s24948/images/logoq.jpg?t=1",
+                "url_resolved": "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service",
+                "url": "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service",
+                "color": "#0f766e"
             },
             {
-                name: "BBC Radio 6 Music",
-                stationuuid: "curated_bbc_6",
-                country: "Reino Unido",
-                countrycode: "GB",
-                tags: "alternative,indie,rock,curated",
-                bitrate: 128,
-                favicon: "https://sounds.files.bbci.co.uk/3.6.4/networks/bbc_6music/colour_default.svg",
-                url_resolved: "https://stream.live.vc.bbcmedia.co.uk/bbc_6music",
-                color: "#0f766e",
-                location: "London, UK"
+                "name": "Heart 80s",
+                "stationuuid": "c4077677-dc2f-11e9-a8ba-52543be04c81",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "80s,national,pop",
+                "bitrate": 128,
+                "favicon": "https://www.heart.co.uk/assets_v4r/heart/img/favicon-196x196.png",
+                "url_resolved": "https://media-ssl.musicradio.com/Heart80sMP3",
+                "url": "https://media-ssl.musicradio.com/Heart80sMP3",
+                "color": "#15803d"
             },
             {
-                name: "Capital FM London",
-                stationuuid: "curated_capital_fm",
-                country: "Reino Unido",
-                countrycode: "GB",
-                tags: "pop,hits,top 40,dance",
-                bitrate: 128,
-                favicon: "https://images.live-radio.net/capital-london.png",
-                url_resolved: "https://media-ice.musicradio.com/CapitalMP3",
-                color: "#e11d48",
-                location: "London, UK"
+                "name": "LBC UK",
+                "stationuuid": "6efe216d-bf7e-11e9-8502-52543be04c81",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "news talk,talk",
+                "bitrate": 48,
+                "favicon": "https://cdn-radiotime-logos.tunein.com/s220687q.png",
+                "url_resolved": "http://media-ice.musicradio.com/LBCUK",
+                "url": "http://media-ice.musicradio.com/LBCUK",
+                "color": "#b91c1c"
             },
             {
-                name: "Classic FM UK",
-                stationuuid: "curated_classic_fm",
-                country: "Reino Unido",
-                countrycode: "GB",
-                tags: "classical,soundtrack,instrumental",
-                bitrate: 128,
-                favicon: "https://images.live-radio.net/classic-fm.png",
-                url_resolved: "https://media-ice.musicradio.com/ClassicFMMP3",
-                color: "#1e3a8a",
-                location: "London, UK"
+                "name": "CAPITAL",
+                "stationuuid": "4ad5bdc7-01e5-47c9-a1f9-751671b4707e",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "capital,capital fm,contemporary hits radio",
+                "bitrate": 48,
+                "favicon": "https://cdn-profiles.tunein.com/s241396/images/logod.jpg",
+                "url_resolved": "https://media-ssl.musicradio.com/CapitalUK",
+                "url": "https://media-ssl.musicradio.com/CapitalUK",
+                "color": "#7c2d12"
             },
             {
-                name: "Heart UK",
-                stationuuid: "curated_heart_uk",
-                country: "Reino Unido",
-                countrycode: "GB",
-                tags: "pop,feel good,90s,00s",
-                bitrate: 128,
-                favicon: "https://images.live-radio.net/heart-london.png",
-                url_resolved: "https://media-ice.musicradio.com/HeartLondonMP3",
-                color: "#dc2626",
-                location: "London, UK"
+                "name": "BBC Radio 4 (128k)",
+                "stationuuid": "98137c2d-ce68-4e33-8cb7-ddf3692ecc9d",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "comedy,drama,news",
+                "bitrate": 128,
+                "favicon": "https://cdn-radiotime-logos.tunein.com/s25419q.png",
+                "url_resolved": "http://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d128000.norewind.m3u8",
+                "url": "http://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d128000.norewind.m3u8",
+                "color": "#4338ca"
             },
             {
-                name: "Radio X UK",
-                stationuuid: "curated_radio_x",
-                country: "Reino Unido",
-                countrycode: "GB",
-                tags: "rock,indie,britpop,alternative",
-                bitrate: 128,
-                favicon: "https://images.live-radio.net/radio-x-london.png",
-                url_resolved: "https://media-ice.musicradio.com/RadioXLondonMP3",
-                color: "#047857",
-                location: "London, UK"
+                "name": "Classic FM UK",
+                "stationuuid": "96063f25-0601-11e8-ae97-52543be04c81",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "classical",
+                "bitrate": 128,
+                "favicon": "http://www.classicfm.com/assets_v4r/classic/img/favicon-196x196.png",
+                "url_resolved": "http://ice-the.musicradio.com/ClassicFMMP3",
+                "url": "http://ice-the.musicradio.com/ClassicFMMP3",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "BBC Radio 2 (128k)",
+                "stationuuid": "3606ef8c-cd58-4440-8c47-dbf1e0cacdac",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "adult contemporary",
+                "bitrate": 128,
+                "favicon": "https://cdn-radiotime-logos.tunein.com/s24940q.png",
+                "url_resolved": "http://as-hls-ww-live.akamaized.net/pool_74208725/live/ww/bbc_radio_two/bbc_radio_two.isml/bbc_radio_two-audio%3d128000.norewind.m3u8",
+                "url": "http://as-hls-ww-live.akamaized.net/pool_74208725/live/ww/bbc_radio_two/bbc_radio_two.isml/bbc_radio_two-audio%3d128000.norewind.m3u8",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "BBC Radio 1",
+                "stationuuid": "fdbdc2b0-c184-437b-8643-9a5bfa45c253",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 101,
+                "favicon": "https://cdn-radiotime-logos.tunein.com/s24939q.png",
+                "url_resolved": "http://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/hls/nonuk/pc_hd_abr_v2/ak/bbc_radio_one.m3u8",
+                "url": "http://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/hls/nonuk/pc_hd_abr_v2/ak/bbc_radio_one.m3u8",
+                "color": "#0369a1"
+            },
+            {
+                "name": "Gold",
+                "stationuuid": "0a1e0bb0-dc37-11e9-a8ba-52543be04c81",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "classic hits,national,oldies",
+                "bitrate": 128,
+                "favicon": "https://www.mygoldmusic.co.uk/assets_v4r/gold/img/favicon-196x196.png",
+                "url_resolved": "https://media-ssl.musicradio.com/GoldMP3",
+                "url": "https://media-ssl.musicradio.com/GoldMP3",
+                "color": "#0f766e"
+            },
+            {
+                "name": "Heart London 106.2",
+                "stationuuid": "9608ade8-0601-11e8-ae97-52543be04c81",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "commercial,hot adult contemporary,london",
+                "bitrate": 128,
+                "favicon": "https://cdn-profiles.tunein.com/s2846/images/logoq.jpg",
+                "url_resolved": "http://ice-sov.musicradio.com/HeartLondonMP3",
+                "url": "http://ice-sov.musicradio.com/HeartLondonMP3",
+                "color": "#15803d"
+            },
+            {
+                "name": "Capital FM London",
+                "stationuuid": "96200095-0601-11e8-ae97-52543be04c81",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "pop",
+                "bitrate": 128,
+                "favicon": "http://assets6.capitalfm.com/2016/11/capital-3d-network-logo-large-canvas-1458228638-herowidev4-0.jpg",
+                "url_resolved": "http://media-ice.musicradio.com/CapitalMP3",
+                "url": "http://media-ice.musicradio.com/CapitalMP3",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "Radio Caroline",
+                "stationuuid": "9606ceae-0601-11e8-ae97-52543be04c81",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "country,pop,rock",
+                "bitrate": 128,
+                "favicon": "http://www.radiocaroline.co.uk/favicon.ico",
+                "url_resolved": "http://78.129.202.200:8040/;",
+                "url": "http://78.129.202.200:8040/;",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "BBC Radio 6 Music",
+                "stationuuid": "1c6dcd6f-88c6-4fd4-8191-078435168e85",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "alternative,blues,dance",
+                "bitrate": 128,
+                "favicon": "https://de8as167a043l.cloudfront.net/styles/images/logosplus/120x120xBBCR6.png",
+                "url_resolved": "http://as-hls-ww-live.akamaized.net/pool_81827798/live/ww/bbc_6music/bbc_6music.isml/bbc_6music-audio%3d320000.norewind.m3u8",
+                "url": "http://as-hls-ww-live.akamaized.net/pool_81827798/live/ww/bbc_6music/bbc_6music.isml/bbc_6music-audio%3d320000.norewind.m3u8",
+                "color": "#4338ca"
+            },
+            {
+                "name": "Smooth Radio",
+                "stationuuid": "962b27a3-0601-11e8-ae97-52543be04c81",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "easy listening,smooth,soft music",
+                "bitrate": 48,
+                "favicon": "http://www.smoothradio.com/assets_v4r/smooth/img/favicon-196x196.png",
+                "url_resolved": "http://media-the.musicradio.com/SmoothEastMids",
+                "url": "http://media-the.musicradio.com/SmoothEastMids",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "Heart 90s",
+                "stationuuid": "52bb00fe-dc31-11e9-a8ba-52543be04c81",
+                "country": "Reino Unido",
+                "countrycode": "GB",
+                "tags": "90s,national,pop",
+                "bitrate": 128,
+                "favicon": "https://www.heart.co.uk/assets_v4r/heart/img/favicon-196x196.png",
+                "url_resolved": "https://media-ssl.musicradio.com/Heart90sMP3",
+                "url": "https://media-ssl.musicradio.com/Heart90sMP3",
+                "color": "#1e3a8a"
             }
         ]
     },
     {
-        id: "portugal",
-        country: "Portugal",
-        flag: "🇵🇹",
-        code: "PT",
-        stations: [
+        "id": "portugal",
+        "country": "Portugal",
+        "flag": "🇵🇹",
+        "code": "PT",
+        "stations": [
             {
-                name: "Rádio Comercial",
-                stationuuid: "curated_comercial_pt",
-                country: "Portugal",
-                countrycode: "PT",
-                tags: "pop,hits,entretenimento,jovem",
-                bitrate: 128,
-                favicon: "https://radiocomercial.pt/assets/icons/favicon-192x192.png",
-                url_resolved: "https://stream-icy.bauermedia.pt/comercial.mp3",
-                color: "#dc2626",
-                location: "Lisboa, Portugal"
+                "name": "Antena 1 (Portugal)",
+                "stationuuid": "dbc018ae-1848-4f26-a677-367011a1f4b2",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "portugal,portuguese,sports",
+                "bitrate": 166,
+                "favicon": "https://www.celsoazevedo.com/files/2022/antena-1.png",
+                "url_resolved": "http://streaming-live-app.rtp.pt/liveradio/antena180a/playlist.m3u8",
+                "url": "http://streaming-live-app.rtp.pt/liveradio/antena180a/playlist.m3u8",
+                "color": "#0369a1"
             },
             {
-                name: "RFM Portugal",
-                stationuuid: "curated_rfm_pt",
-                country: "Portugal",
-                countrycode: "PT",
-                tags: "pop,rock,sucessos,hits",
-                bitrate: 128,
-                favicon: "https://rfm.pt/assets/icons/favicon-192x192.png",
-                url_resolved: "https://stream-icy.bauermedia.pt/rfm.mp3",
-                color: "#0284c7",
-                location: "Lisboa, Portugal"
+                "name": "RFM",
+                "stationuuid": "856155ee-f434-4a45-9225-391c0e618b8b",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "64kbps",
+                "bitrate": 64,
+                "favicon": "https://rfmsite-images.azureedge.net/icons/touch-icon-iphone-retina.png",
+                "url_resolved": "https://23603.live.streamtheworld.com/RFMAAC.aac",
+                "url": "https://23603.live.streamtheworld.com/RFMAAC.aac",
+                "color": "#0f766e"
             },
             {
-                name: "M80 Rádio Portugal",
-                stationuuid: "curated_m80_pt",
-                country: "Portugal",
-                countrycode: "PT",
-                tags: "flashback,anos 80,anos 90,classicos",
-                bitrate: 128,
-                favicon: "https://m80.pt/assets/icons/favicon-192x192.png",
-                url_resolved: "https://stream-icy.bauermedia.pt/m80.mp3",
-                color: "#7c3aed",
-                location: "Lisboa, Portugal"
+                "name": "Rádio Comercial",
+                "stationuuid": "2b501db4-e4b6-4106-9670-9875536f70f1",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "contemporary,dance,pop",
+                "bitrate": 127,
+                "favicon": "https://static2.mytuner.mobi/media/tvos_radios/drkZNBUn6W.png",
+                "url_resolved": "https://stream-hls.bauermedia.pt/comercial.aac/playlist.m3u8",
+                "url": "https://stream-hls.bauermedia.pt/comercial.aac/playlist.m3u8",
+                "color": "#15803d"
             },
             {
-                name: "Antena 1 Portugal",
-                stationuuid: "curated_antena1_pt",
-                country: "Portugal",
-                countrycode: "PT",
-                tags: "noticias,cultura,fado,talk",
-                bitrate: 128,
-                favicon: "https://cdn-radios.rtp.pt/antena1/wp-content/themes/antena1/assets/img/antena1.png",
-                url_resolved: "https://radiocast.rtp.pt/antena180a.mp3",
-                color: "#059669",
-                location: "Lisboa, Portugal"
+                "name": "TSF Rádio Notícias",
+                "stationuuid": "cc461784-3150-4a34-81c5-2116fe024740",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "desporto,futebol,notícias",
+                "bitrate": 128,
+                "favicon": "https://www.celsoazevedo.com/files/2024/tsf.png",
+                "url_resolved": "https://directo.tsf.pt/tsfdirecto.mp3",
+                "url": "https://directo.tsf.pt/tsfdirecto.mp3",
+                "color": "#b91c1c"
             },
             {
-                name: "TSF Rádio Notícias",
-                stationuuid: "curated_tsf_pt",
-                country: "Portugal",
-                countrycode: "PT",
-                tags: "news,talk,jornalismo,informacao",
-                bitrate: 96,
-                favicon: "https://static.mytuner.mobi/media/tvos_radios/gH5n6fEw4c.png",
-                url_resolved: "https://tsfdirecto.tsf.pt/tsf.mp3",
-                color: "#b91c1c",
-                location: "Lisboa, Portugal"
+                "name": "M80 Rádio – 80s",
+                "stationuuid": "7bc1f66f-412d-484b-82eb-b7b1c4575faa",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "80s,pop,romantic",
+                "bitrate": 128,
+                "favicon": "http://webradiodirectory.com/wp-content/uploads/2021/01/cc9443f16e2af31ba205ac82214760c9.jpg",
+                "url_resolved": "https://stream-icy.bauermedia.pt/m8080.aac",
+                "url": "https://stream-icy.bauermedia.pt/m8080.aac",
+                "color": "#7c2d12"
             },
             {
-                name: "Mega Hits",
-                stationuuid: "curated_mega_hits",
-                country: "Portugal",
-                countrycode: "PT",
-                tags: "pop,dance,eletronica,jovem",
-                bitrate: 128,
-                favicon: "https://megahits.pt/assets/icons/favicon-192x192.png",
-                url_resolved: "https://stream-icy.bauermedia.pt/megahits.mp3",
-                color: "#ea580c",
-                location: "Lisboa, Portugal"
+                "name": "Rádio Observador",
+                "stationuuid": "e822ed30-1b14-4a90-906f-a1267e3d761d",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 128,
+                "favicon": "https://observador.pt/wp-content/themes/observador-child/assets/build/img/favicon.ico",
+                "url_resolved": "http://195.23.85.126:8455/stream",
+                "url": "http://195.23.85.126:8455/listen.pls?sid=1",
+                "color": "#4338ca"
+            },
+            {
+                "name": "Rádio Renascença",
+                "stationuuid": "9618e7a0-0601-11e8-ae97-52543be04c81",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "national news",
+                "bitrate": 64,
+                "favicon": "https://rrsite-images.azureedge.net/favicon/apple-touch-icon.png",
+                "url_resolved": "http://29345.live.streamtheworld.com/RADIO_RENASCENCA_SC",
+                "url": "http://provisioning.streamtheworld.com/pls/RADIO_RENASCENCA.pls",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "Radio Comercial Portugal",
+                "stationuuid": "44cb20dc-e9ac-41ef-a4fe-153d48fcdd96",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 128,
+                "favicon": "",
+                "url_resolved": "https://stream-icy.bauermedia.pt/comercial.mp3",
+                "url": "https://stream-icy.bauermedia.pt/comercial.mp3",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "M80 rádio",
+                "stationuuid": "c6ed0be5-21dd-4b03-aa18-0dbc9a0c3f87",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "2000's,70's,80's",
+                "bitrate": 128,
+                "favicon": "",
+                "url_resolved": "http://stream-icy.bauermedia.pt/m80.mp3",
+                "url": "http://stream-icy.bauermedia.pt/m80.mp3",
+                "color": "#0369a1"
+            },
+            {
+                "name": "Mega Hits",
+                "stationuuid": "9618e93b-0601-11e8-ae97-52543be04c81",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "pop,top 40",
+                "bitrate": 64,
+                "favicon": "http://cdn-radiotime-logos.tunein.com/s6745q.png",
+                "url_resolved": "http://25583.live.streamtheworld.com/MEGA_HITS_SC",
+                "url": "http://provisioning.streamtheworld.com/pls/mega_hits.pls",
+                "color": "#0f766e"
+            },
+            {
+                "name": "Antena 1 (Portugal)",
+                "stationuuid": "909735da-70e8-4527-b771-52793d9f0086",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "live sports,musica,talk & speech",
+                "bitrate": 173,
+                "favicon": "https://cdn-images.rtp.pt/play/images/apple-touch-icon.png-120x120.png",
+                "url_resolved": "https://streaming-live.rtp.pt/liveradio/antena180a/playlist.m3u8",
+                "url": "https://streaming-live.rtp.pt/liveradio/antena180a/playlist.m3u8",
+                "color": "#15803d"
+            },
+            {
+                "name": "TOP 80",
+                "stationuuid": "89bd8b04-11c9-42bf-a374-e5eb3b7b8f22",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 320,
+                "favicon": "https://www.top80.fm/wp-content/uploads/2023/03/cropped-ic_launcher_top80-180x180.png",
+                "url_resolved": "http://live.top80.fm:8086/",
+                "url": "http://live.top80.fm:8086/",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "Rap/Hip Hop",
+                "stationuuid": "2a0fb11e-f91a-4553-bfff-3861a1de8fb9",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "hip hop,portugal,tuga",
+                "bitrate": 128,
+                "favicon": "",
+                "url_resolved": "http://185.32.188.17:8097/stream",
+                "url": "http://185.32.188.17:8097/stream",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "4Drive Jazz",
+                "stationuuid": "f86c489e-7e21-11e9-aa30-52543be04c81",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "jazz fusion,nu-jazz,smooth jazz",
+                "bitrate": 192,
+                "favicon": "https://www.wix.com/favicon.ico",
+                "url_resolved": "http://radio.streemlion.com:1150/stream",
+                "url": "http://radio.streemlion.com:1150/stream",
+                "color": "#4338ca"
+            },
+            {
+                "name": "Radio Commercial",
+                "stationuuid": "ac843a5b-f7ef-4b89-9491-590bdaf20b4c",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "pop",
+                "bitrate": 128,
+                "favicon": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Logo_Radio_Comercial.jpg",
+                "url_resolved": "https://stream-icy.bauermedia.pt/comercial.mp3",
+                "url": "https://stream-icy.bauermedia.pt/comercial.mp3",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "M80 Rádio – Ballads",
+                "stationuuid": "a08d74ca-2172-447a-941a-b5c5c20afdd6",
+                "country": "Portugal",
+                "countrycode": "PT",
+                "tags": "70s,80s,90s",
+                "bitrate": 127,
+                "favicon": "",
+                "url_resolved": "https://stream-icy.bauermedia.pt/m80ballads.aac",
+                "url": "https://stream-icy.bauermedia.pt/m80ballads.aac",
+                "color": "#1e3a8a"
             }
         ]
     },
     {
-        id: "espanha",
-        country: "Espanha",
-        flag: "🇪🇸",
-        code: "ES",
-        stations: [
+        "id": "espanha",
+        "country": "Espanha",
+        "flag": "🇪🇸",
+        "code": "ES",
+        "stations": [
             {
-                name: "Los 40 Principales",
-                stationuuid: "curated_los40_es",
-                country: "Espanha",
-                countrycode: "ES",
-                tags: "pop,latin,hits,dance",
-                bitrate: 128,
-                favicon: "https://los40.com/dist/assets/images/favicon/favicon-192.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/LOS40AAC.aac",
-                color: "#0284c7",
-                location: "Madrid, España"
+                "name": "Cadena SER España",
+                "stationuuid": "692a3b69-0f68-11ea-a87e-52543be04c81",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "cultural news,live,news",
+                "bitrate": 128,
+                "favicon": "https://cadenaser00.epimg.net/favicon.png",
+                "url_resolved": "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASER.mp3",
+                "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASER.mp3",
+                "color": "#0369a1"
             },
             {
-                name: "Cadena SER",
-                stationuuid: "curated_cadenaser_es",
-                country: "Espanha",
-                countrycode: "ES",
-                tags: "news,talk,noticias,actualidad",
-                bitrate: 96,
-                favicon: "https://cadenaser.com/dist/assets/images/favicon/favicon-192.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC.aac",
-                color: "#1d4ed8",
-                location: "Madrid, España"
+                "name": "Cadena 100",
+                "stationuuid": "960c37c6-0601-11e8-ae97-52543be04c81",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "music",
+                "bitrate": 128,
+                "favicon": "https://www.cadena100.es/estaticos/apple-touch-icon-192x192.png",
+                "url_resolved": "http://cadena100-streamers-mp3.flumotion.com/cope/cadena100.mp3",
+                "url": "http://cadena100-streamers-mp3.flumotion.com/cope/cadena100.mp3",
+                "color": "#0f766e"
             },
             {
-                name: "Cadena Dial",
-                stationuuid: "curated_cadenadial_es",
-                country: "Espanha",
-                countrycode: "ES",
-                tags: "pop,baladas,musica en espanol",
-                bitrate: 128,
-                favicon: "https://cadenadial.com/dist/assets/images/favicon/favicon-192.png",
-                url_resolved: "https://playerservices.streamtheworld.com/api/livestream-redirect/CADENADIALAAC.aac",
-                color: "#16a34a",
-                location: "Madrid, España"
+                "name": "LOS 40 Principales España",
+                "stationuuid": "b81c57c3-eb05-47ac-a0ea-eb01a6960cc4",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "music,pop,top 40",
+                "bitrate": 128,
+                "favicon": "https://los40es00.epimg.net/iconos/v1.x/v1.0/touch-apple.png",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/Los40.mp3",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/Los40.mp3",
+                "color": "#15803d"
             },
             {
-                name: "Rock FM España",
-                stationuuid: "curated_rockfm_es",
-                country: "Espanha",
-                countrycode: "ES",
-                tags: "rock,classic rock,hard rock",
-                bitrate: 128,
-                favicon: "https://static.mytuner.mobi/media/tvos_radios/2J2r2q3K4E.png",
-                url_resolved: "https://rockfm.cope.stream.flumotion.com/cope/rockfm.mp3",
-                color: "#1e293b",
-                location: "Madrid, España"
+                "name": "COPE + Sevilla",
+                "stationuuid": "09f4d466-1ab2-4b61-a180-96409adc5d80",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "local news",
+                "bitrate": 96,
+                "favicon": "",
+                "url_resolved": "http://wecast09-h-cloud.flumotion.com/copesedes/sevilla-mas.mp3",
+                "url": "http://wecast09-h-cloud.flumotion.com/copesedes/sevilla-mas.mp3",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "RAC1",
+                "stationuuid": "38a33fc0-be05-4c98-8c6a-ba3869575bc1",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "culture,humour,local news",
+                "bitrate": 128,
+                "favicon": "",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC_1.mp3",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC_1.mp3",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "Cope Madrid FM",
+                "stationuuid": "00526b4f-47a3-432d-baca-f914c1273f0b",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 64,
+                "favicon": "https://static.mytuner.mobi/media/tvos_radios/871/cope-madrid.51d780e3.png",
+                "url_resolved": "https://net1-cope-rrcast.flumotion.com/cope/net1-low.mp3",
+                "url": "https://net1-cope-rrcast.flumotion.com/cope/net1-low.mp3",
+                "color": "#4338ca"
+            },
+            {
+                "name": "Cadena Dial",
+                "stationuuid": "84c6f3cc-3c66-415d-aff5-050b5f330adc",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "música en español",
+                "bitrate": 128,
+                "favicon": "https://www.cadenadial.com/wp-content/uploads/2024/03/cropped-512x512_favicon_dial-180x180.png",
+                "url_resolved": "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENADIAL.mp3",
+                "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENADIAL.mp3",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "Radio Nacional de España",
+                "stationuuid": "5d6b5573-d661-477a-82fc-1d0d03799679",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "news,talk",
+                "bitrate": 128,
+                "favicon": "https://img2.rtve.es/css//rtve.2021/i/rtve-logos/logos_cadenas/radio-5_color.svg",
+                "url_resolved": "https://d131.rndfnk.com/star/crtve/rne5/main/mp3/128/stream.mp3?aggregator=tunein&cid=01GEP4MW5CAHPYP1EXHVKWFJ8W&sid=2OeE42hivuba6dTGvjnMGjKByQe&token=cdczXcnimVx4AY4iamqYbTMdu3cK7oBxmS2UQN9cWc0&tvf=pdPcDBxuVxdkMTMxLnJuZGZuay5jb20",
+                "url": "https://d131.rndfnk.com/star/crtve/rne5/main/mp3/128/stream.mp3?aggregator=tunein&cid=01GEP4MW5CAHPYP1EXHVKWFJ8W&sid=2OeE42hivuba6dTGvjnMGjKByQe&token=cdczXcnimVx4AY4iamqYbTMdu3cK7oBxmS2UQN9cWc0&tvf=pdPcDBxuVxdkMTMxLnJuZGZuay5jb20",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "Rock FM",
+                "stationuuid": "9649dec5-0601-11e8-ae97-52543be04c81",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 96,
+                "favicon": "https://www.rockfm.fm/estaticos/apple-touch-icon-192x192.png",
+                "url_resolved": "http://flucast34-h-cloud.flumotion.com/cope/rockfm-low.mp3",
+                "url": "http://rockfm.cope.stream.flumotion.com/cope/rockfm-low.mp3.m3u",
+                "color": "#0369a1"
+            },
+            {
+                "name": "Los 40 Urban",
+                "stationuuid": "8cc2da8b-ae85-4e37-9027-9ad765a1ea7a",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "dance,music,pop",
+                "bitrate": 128,
+                "favicon": "https://los40es00.epimg.net/iconos/v1.x/v1.0/promos/promo_og_los40.png",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/LOS40_URBAN.mp3",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/LOS40_URBAN.mp3",
+                "color": "#0f766e"
+            },
+            {
+                "name": "COPE Málaga",
+                "stationuuid": "9584da46-3ab4-11e9-9b4e-52543be04c81",
+                "country": "Espanha",
+                "countrycode": "ES",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 96,
+                "favicon": "https://www.cope.es/favicon/cope/apple-touch-icon-192x192.png",
+                "url_resolved": "http://flucast16-h-cloud.flumotion.com/cope/net1.mp3",
+                "url": "http://net1.cope.stream.flumotion.com/cope/net1.mp3.m3u",
+                "color": "#15803d"
             }
         ]
     },
     {
-        id: "internacional",
-        country: "Internacional & Global",
-        flag: "🌐",
-        code: "GLOBAL",
-        stations: [
+        "id": "franca",
+        "country": "França",
+        "flag": "🇫🇷",
+        "code": "FR",
+        "stations": [
             {
-                name: "1LIVE WDR",
-                stationuuid: "curated_1live_de",
-                country: "Alemanha",
-                countrycode: "DE",
-                tags: "pop,dance,electronic,hits",
-                bitrate: 128,
-                favicon: "https://www1.wdr.de/radio/1live/1live-logo-100~_v-gseapremiumxl.jpg",
-                url_resolved: "https://wdr-1live-live.icecast.wdr.de/wdr/1live/live/mp3/128/stream.mp3",
-                color: "#dc2626",
-                location: "Köln, Deutschland"
+                "name": "RTL",
+                "stationuuid": "042d3140-227c-4fac-9387-4903b692d5f2",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "généraliste",
+                "bitrate": 64,
+                "favicon": "https://duckduckgo.com/i/035a5e15d396c67a.png",
+                "url_resolved": "https://live.m6radio.quortex.io/webM89Hc99XApzgfhXNX8ASN5/grouprtl/national/short/audio-64000/index.m3u8",
+                "url": "https://live.m6radio.quortex.io/webM89Hc99XApzgfhXNX8ASN5/grouprtl/national/short/audio-64000/index.m3u8",
+                "color": "#b91c1c"
             },
             {
-                name: "Sunshine Live",
-                stationuuid: "curated_sunshine_live",
-                country: "Alemanha",
-                countrycode: "DE",
-                tags: "electronic,edm,techno,trance",
-                bitrate: 192,
-                favicon: "https://static.mytuner.mobi/media/tvos_radios/3j3g96357d34.jpg",
-                url_resolved: "https://sunsl.streamabc.net/sunsl-techno-mp3-192-3487441",
-                color: "#f59e0b",
-                location: "Berlin, Deutschland"
+                "name": "France Info",
+                "stationuuid": "1cfb151d-a341-11e9-a787-52543be04c81",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 128,
+                "favicon": "https://www.francetvinfo.fr/assets/common/images/pwa/ios/120-5487caf3.png",
+                "url_resolved": "http://direct.franceinfo.fr/live/franceinfo-midfi.mp3",
+                "url": "http://direct.franceinfo.fr/live/franceinfo-midfi.mp3",
+                "color": "#7c2d12"
             },
             {
-                name: "Defected Radio",
-                stationuuid: "curated_defected_global",
-                country: "Reino Unido",
-                countrycode: "GB",
-                tags: "house,dance,electronic,club",
-                bitrate: 128,
-                favicon: "https://defected.com/assets/favicon/apple-touch-icon.png",
-                url_resolved: "https://stream.defected.com/defected.mp3",
-                color: "#475569",
-                location: "London, UK"
+                "name": "RMC FR",
+                "stationuuid": "7a3a3989-8f26-44f7-9ae5-fa91e5cf4f9d",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "france,info,sport",
+                "bitrate": 128,
+                "favicon": "https://i1.wp.com/www.mediasportif.fr/wp-content/uploads/2014/05/Radio-RMC.jpg",
+                "url_resolved": "https://audio.bfmtv.com/rmcradio_128.mp3",
+                "url": "https://audio.bfmtv.com/rmcradio_128.mp3",
+                "color": "#4338ca"
             },
             {
-                name: "SomaFM - Secret Agent",
-                stationuuid: "curated_secret_agent",
-                country: "Estados Unidos",
-                countrycode: "US",
-                tags: "lounge,chillout,spy,soundtrack",
-                bitrate: 128,
-                favicon: "https://somafm.com/img/secretagent120.jpg",
-                url_resolved: "https://ice1.somafm.com/secretagent-128-mp3",
-                color: "#047857",
-                location: "San Francisco, CA"
+                "name": "Europe 1",
+                "stationuuid": "dfcef843-6bf9-40f6-b3fe-2b224df86e48",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "aac,news,talk",
+                "bitrate": 128,
+                "favicon": "https://www.europe1.fr/build/e1/images/favicon-120x120.png",
+                "url_resolved": "https://stream.europe1.fr/europe1.aac",
+                "url": "https://stream.europe1.fr/europe1.aac",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "France Inter",
+                "stationuuid": "33960c43-0464-44b4-abfa-73591ebf647f",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 128,
+                "favicon": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/France_Inter_logo_2021.svg/1200px-France_Inter_logo_2021.svg.png",
+                "url_resolved": "https://stream.radiofrance.fr/franceinter/franceinter_hifi.m3u8?id=radiofrance",
+                "url": "https://stream.radiofrance.fr/franceinter/franceinter_hifi.m3u8?id=radiofrance",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "Nostalgie HQ",
+                "stationuuid": "d39ab442-6c34-4097-afd0-e298ac21e50c",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 320,
+                "favicon": "https://img.nrj.fr/J6jlakQsQ2siRzCzCI_2IDCQj1E=/80x80/https%3A%2F%2Fplayers.nrjaudio.fm%2Flive-metadata%2Fplayer%2Fimg%2Fplayer-files%2Fnosta%2Flogos%2F640x640%2FP_Nostalgie_Premium_Logo_2023.png",
+                "url_resolved": "https://streaming.nrjaudio.fm/oua8a3w2dqao?origine=playernostalgie&aw_0_req.userConsentV2=&aw_0_1st.station=",
+                "url": "https://streaming.nrjaudio.fm/oua8a3w2dqao?origine=playernostalgie&aw_0_req.userConsentV2=&aw_0_1st.station=",
+                "color": "#0369a1"
+            },
+            {
+                "name": "FUN Radio",
+                "stationuuid": "9f756e2d-8e9b-45f5-8fc1-61573e23036b",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "dance,electro,latino",
+                "bitrate": 128,
+                "favicon": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Logo_Fun_Radio_%282021%29.svg/langfr-1280px-Logo_Fun_Radio_%282021%29.svg.png",
+                "url_resolved": "http://icecast.funradio.fr/fun-1-44-128",
+                "url": "http://icecast.funradio.fr/fun-1-44-128",
+                "color": "#0f766e"
+            },
+            {
+                "name": "RFM",
+                "stationuuid": "2dffb353-5341-4438-b67b-83de8c3efbab",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 128,
+                "favicon": "http://cdn-rfm.lanmedia.fr/apple-touch-icon-120x120.png",
+                "url_resolved": "http://stream.rfm.fr/rfm.mp3",
+                "url": "http://stream.rfm.fr/rfm.mp3",
+                "color": "#15803d"
+            },
+            {
+                "name": "Skyrock",
+                "stationuuid": "01b61e49-18bd-486d-b0e1-cb51cbaf9a6d",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "rap",
+                "bitrate": 128,
+                "favicon": "https://play-lh.googleusercontent.com/dPiQ01OUKZVfRZUbbb-EVK5g9miS_K-xrxHgmBbynGG-GQ53yt3GzFKr0zUTnb-xswQ=s200-rw",
+                "url_resolved": "http://icecast.skyrock.net/s/natio_mp3_128k",
+                "url": "http://icecast.skyrock.net/s/natio_mp3_128k",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "Chérie FM",
+                "stationuuid": "f9ed1fa4-63d7-45a4-bdd6-48c5567f0f6b",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 128,
+                "favicon": "https://media.info/l/o/6/6812.1503485369.png",
+                "url_resolved": "https://cdnradio.streamakaci.com/cheriefm1.mp3",
+                "url": "https://cdnradio.streamakaci.com/cheriefm1.mp3",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "France Culture",
+                "stationuuid": "6a1440b2-e6f0-11e9-a96c-52543be04c81",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "aac,culture,public radio",
+                "bitrate": 192,
+                "favicon": "https://upload.wikimedia.org/wikipedia/fr/thumb/c/c9/France_Culture_-_2008.svg/1024px-France_Culture_-_2008.svg.png",
+                "url_resolved": "http://icecast.radiofrance.fr/franceculture-hifi.aac",
+                "url": "http://icecast.radiofrance.fr/franceculture-hifi.aac",
+                "color": "#4338ca"
+            },
+            {
+                "name": "Jazz Radio Blues",
+                "stationuuid": "96102c22-0601-11e8-ae97-52543be04c81",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "blues,jazz",
+                "bitrate": 128,
+                "favicon": "https://www.jazzradio.fr/apple-touch-icon-120x120.png",
+                "url_resolved": "http://jazzblues.ice.infomaniak.ch/jazzblues-high.mp3",
+                "url": "http://jazzblues.ice.infomaniak.ch/jazzblues-high.mp3",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "Europe 2",
+                "stationuuid": "be1e97e2-064a-4710-9ce9-d792d8beb1ca",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "pop rock",
+                "bitrate": 128,
+                "favicon": "https://www.europe2.fr/wp-content/themes/melty/europeradio/assets/images/favicons/favicon128.png",
+                "url_resolved": "http://europe2.lmn.fm/europe2.mp3",
+                "url": "http://europe2.lmn.fm/europe2.mp3",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "FIP",
+                "stationuuid": "932eb148-e6f6-11e9-a96c-52543be04c81",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "aac,music,public radio",
+                "bitrate": 192,
+                "favicon": "https://upload.wikimedia.org/wikipedia/fr/thumb/d/d5/FIP_logo_2005.svg/1024px-FIP_logo_2005.svg.png",
+                "url_resolved": "http://icecast.radiofrance.fr/fip-hifi.aac",
+                "url": "http://icecast.radiofrance.fr/fip-hifi.aac",
+                "color": "#0369a1"
+            },
+            {
+                "name": "Rire et Chansons",
+                "stationuuid": "a70cdc64-9a33-4432-91a1-957beb5ac6e7",
+                "country": "França",
+                "countrycode": "FR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 128,
+                "favicon": "https://img.nrj.fr/OImjPWH1tkT1NaUMPlxsY49g9BI=/medias%2F2024%2F03%2Fvvscnx9i3yteabtkx8nlpdusmqj6uo8hshh9iphoit8_65fbfe026c3a5.png",
+                "url_resolved": "https://streaming.nrjaudio.fm/ou8o8xgk7oiu?origine=fluxradios",
+                "url": "https://streaming.nrjaudio.fm/ou8o8xgk7oiu?origine=fluxradios",
+                "color": "#0f766e"
+            }
+        ]
+    },
+    {
+        "id": "alemanha",
+        "country": "Alemanha",
+        "flag": "🇩🇪",
+        "code": "DE",
+        "stations": [
+            {
+                "name": "MANGORADIO",
+                "stationuuid": "78012206-1aa1-11e9-a80b-52543be04c81",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "music,variety",
+                "bitrate": 128,
+                "favicon": "https://mangoradio.de/wp-content/uploads/cropped-Logo-192x192.webp",
+                "url_resolved": "https://mangoradio.stream.laut.fm/mangoradio",
+                "url": "https://mangoradio.stream.laut.fm/mangoradio",
+                "color": "#15803d"
+            },
+            {
+                "name": "Deutschlandfunk | DLF | MP3 128k",
+                "stationuuid": "1c3e8be2-5b14-4933-bad3-87cbc227cba4",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "culture,news,public service",
+                "bitrate": 128,
+                "favicon": "https://www.deutschlandfunk.de/static/img/deutschlandfunk/icons/apple-touch-icon-128x128.png",
+                "url_resolved": "https://st01.sslstream.dlf.de/dlf/01/128/mp3/stream.mp3?aggregator=web",
+                "url": "https://st01.sslstream.dlf.de/dlf/01/128/mp3/stream.mp3?aggregator=web",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "SWR3",
+                "stationuuid": "240d28b9-7858-48d2-a816-9cf8e1875fe8",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "news,pop,rock",
+                "bitrate": 128,
+                "favicon": "https://swr3.de/assets/swr3/icons/apple-touch-icon.png",
+                "url_resolved": "https://liveradio.swr.de/sw282p3/swr3/play.mp3",
+                "url": "https://liveradio.swr.de/sw282p3/swr3/play.mp3",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "1LIVE",
+                "stationuuid": "9606f727-0601-11e8-ae97-52543be04c81",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "ard,public radio,rock",
+                "bitrate": 128,
+                "favicon": "https://www1.wdr.de/radio/1live/resources/img/favicon/apple-touch-icon.png",
+                "url_resolved": "http://wdr-1live-live.icecast.wdr.de/wdr/1live/live/mp3/128/stream.mp3",
+                "url": "http://wdr-1live-live.icecast.wdr.de/wdr/1live/live/mp3/128/stream.mp3",
+                "color": "#4338ca"
+            },
+            {
+                "name": "Bayern 3",
+                "stationuuid": "0de82079-04e7-407b-b616-e0726eba5244",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "pop",
+                "bitrate": 128,
+                "favicon": "https://api.ardmediathek.de/image-service/images/urn:ard:image:52fd25fc45de7c6a?w=512",
+                "url_resolved": "https://dispatcher.rndfnk.com/br/br3/live/mp3/mid",
+                "url": "https://dispatcher.rndfnk.com/br/br3/live/mp3/mid",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "WDR 5",
+                "stationuuid": "9605edb3-0601-11e8-ae97-52543be04c81",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "information,news,news talk",
+                "bitrate": 128,
+                "favicon": "https://www1.wdr.de/resources-v5.134.1/img/favicon/apple-touch-icon.png",
+                "url_resolved": "http://wdr-wdr5-live.icecast.wdr.de/wdr/wdr5/live/mp3/128/stream.mp3",
+                "url": "http://wdr-wdr5-live.icecast.wdr.de/wdr/wdr5/live/mp3/128/stream.mp3",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "Deutschlandfunk | DLF | AAC 192k",
+                "stationuuid": "717e3749-b9e8-4497-bd6a-61ccec935922",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "culture,news,public service",
+                "bitrate": 256,
+                "favicon": "https://www.deutschlandfunk.de/static/img/deutschlandfunk/icons/apple-touch-icon-128x128.png",
+                "url_resolved": "https://st01.sslstream.dlf.de/dlf/01/high/aac/stream.aac?aggregator=web",
+                "url": "https://st01.sslstream.dlf.de/dlf/01/high/aac/stream.aac?aggregator=web",
+                "color": "#0369a1"
+            },
+            {
+                "name": "Deutschlandfunk | DLF | OPUS 24k",
+                "stationuuid": "5a6946a2-f02f-4fd1-a16b-558c90150041",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "culture,news,public service",
+                "bitrate": 24,
+                "favicon": "https://www.deutschlandfunk.de/static/img/deutschlandfunk/icons/apple-touch-icon-128x128.png",
+                "url_resolved": "https://st01.sslstream.dlf.de/dlf/01/low/opus/stream.opus?aggregator=web",
+                "url": "https://st01.sslstream.dlf.de/dlf/01/low/opus/stream.opus?aggregator=web",
+                "color": "#0f766e"
+            },
+            {
+                "name": "Radio Eins",
+                "stationuuid": "960553a5-0601-11e8-ae97-52543be04c81",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "adult contemporary,alternative,ard",
+                "bitrate": 128,
+                "favicon": "http://www.radioeins.de/content/dam/rbb/rbb/logos/touch/rad-128.png",
+                "url_resolved": "http://f141.rndfnk.com/ard/rbb/radioeins/live/mp3/128/stream.mp3?cid=01FC1WH12KJ93TCQPDSE2E5PZ9&sid=3L1ahU3DyMuvzoooMtjNapDWmFh&token=bbem21t6MT_sgPAWAAXFbH7ajKRbnI-ifyy55rbsqXs&tvf=ld4c-87B4BhmMTQxLnJuZGZuay5jb20",
+                "url": "http://radioeins.de/stream",
+                "color": "#15803d"
+            },
+            {
+                "name": "SWR1 BW",
+                "stationuuid": "36a6d57a-4d8a-45e3-aad9-7931c6e43c56",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 128,
+                "favicon": "https://www.radio.at/images/broadcasts/07/41/2273/2/c300.png",
+                "url_resolved": "https://liveradio.swr.de/sw282p3/swr1bw/play.mp3",
+                "url": "https://liveradio.swr.de/sw282p3/swr1bw/play.mp3",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "- DJ & CLUB CHARTS ---> Club Classics, Festival-Hits, Remixes, Single Charts, Mashups, DJ Sets, Club Edits, Dancefloor, Underground, Nightlife, Party Anthems, Ibiza, Miami, Clubbing, Festival, Remix, Mashup, DJ, EDM,  RAVE, Dance, Urban, Latin, Beachclub, Lounge",
+                "stationuuid": "3d9dcff7-8fd2-4eda-9d77-cfe259c62a70",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "#bewirbdich!,#mashup,beach",
+                "bitrate": 192,
+                "favicon": "https://i.ibb.co/P7QHpGB/DJ-CLUB-CHARTS-LOGO.png",
+                "url_resolved": "https://breakz-2012-high.rautemusik.fm/?ref=rb-djclubcharts",
+                "url": "https://breakz-2012-high.rautemusik.fm/?ref=rb-djclubcharts",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "# TOP 100 DJ CHARTS",
+                "stationuuid": "5bc44bcd-7481-40e1-b503-bb92b936f4cf",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "#90s,#charts,2000s",
+                "bitrate": 192,
+                "favicon": "https://i.ibb.co/jMmvLjz/TOP100-DJ-CHARTS-RADIO.png",
+                "url_resolved": "https://breakz-high.rautemusik.fm/?ref=radiobrowser-top100-djcharts",
+                "url": "https://breakz-high.rautemusik.fm/?ref=radiobrowser-top100-djcharts",
+                "color": "#4338ca"
+            },
+            {
+                "name": "BR24",
+                "stationuuid": "787eda99-1532-4ee0-b14e-fdb88ec71530",
+                "country": "Alemanha",
+                "countrycode": "DE",
+                "tags": "news",
+                "bitrate": 128,
+                "favicon": "https://api.ardmediathek.de/image-service/images/urn:ard:image:c3ab9296f3b282bf?w=512",
+                "url_resolved": "https://dispatcher.rndfnk.com/br/br24/live/mp3/mid",
+                "url": "https://dispatcher.rndfnk.com/br/br24/live/mp3/mid",
+                "color": "#6b21a8"
+            }
+        ]
+    },
+    {
+        "id": "italia",
+        "country": "Itália",
+        "flag": "🇮🇹",
+        "code": "IT",
+        "stations": [
+            {
+                "name": "Radio 24 il sole 24 ore",
+                "stationuuid": "986c5985-41d7-11ea-a95e-52543be04c81",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "news talk",
+                "bitrate": 64,
+                "favicon": "https://www.radio24.ilsole24ore.com/whitelabel/group-2420101401040528/img/apple-touch-icon.png",
+                "url_resolved": "http://shoutcast2.radio24.it:8000/;",
+                "url": "http://shoutcast2.radio24.it:8000/;",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "Radio Deejay",
+                "stationuuid": "999ff951-68eb-4f4a-bec9-ed972b99d258",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "italian,news,pop",
+                "bitrate": 122,
+                "favicon": "https://www.deejay.it/favicon.ico",
+                "url_resolved": "https://4c4b867c89244861ac216426883d1ad0.msvdn.net/radiodeejay/radiodeejay/master_ma.m3u8",
+                "url": "https://4c4b867c89244861ac216426883d1ad0.msvdn.net/radiodeejay/radiodeejay/master_ma.m3u8",
+                "color": "#0369a1"
+            },
+            {
+                "name": "Rai Radio 1",
+                "stationuuid": "96185693-0601-11e8-ae97-52543be04c81",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "news,public radio,rai",
+                "bitrate": 256,
+                "favicon": "",
+                "url_resolved": "http://icestreaming.rai.it/1.mp3",
+                "url": "http://icestreaming.rai.it/1.mp3",
+                "color": "#0f766e"
+            },
+            {
+                "name": "Radio Italia Solo Musica Italiana",
+                "stationuuid": "216ee092-939d-43b6-8562-c646f73ad89f",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "italian pop",
+                "bitrate": 128,
+                "favicon": "https://www.radioitalia.it/images/logo-radioitalia.png",
+                "url_resolved": "https://radioitaliasmi.akamaized.net/hls/live/2093120/RISMI/stream01/streamPlaylist.m3u8",
+                "url": "https://radioitaliasmi.akamaized.net/hls/live/2093120/RISMI/stream01/streamPlaylist.m3u8",
+                "color": "#15803d"
+            },
+            {
+                "name": "Radio Armisa",
+                "stationuuid": "83dcfac4-b3c3-4731-afc1-a80dd271dffa",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "anni 80,anni 90,balera",
+                "bitrate": 128,
+                "favicon": "https://armisa.it/assets/favicon/android-chrome-512x512.png",
+                "url_resolved": "https://onair.armisa.it/listen/armisa/radio.mp3",
+                "url": "https://onair.armisa.it/listen/armisa/radio.mp3",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "Radio Kiss Kiss",
+                "stationuuid": "961756e4-0601-11e8-ae97-52543be04c81",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "adult contemporary,pop",
+                "bitrate": 128,
+                "favicon": "https://kisskiss.it/wp-content/uploads/2022/07/cropped-favicon-new-kisskiss-180x180.png",
+                "url_resolved": "http://wma08.fluidstream.net:4610/",
+                "url": "http://players.fluidstream.net/kisskissnetwork.pls",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "RTL 102.5",
+                "stationuuid": "675bd925-8b13-43fe-a1b9-43bb0f90fbbd",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "local,news,varied",
+                "bitrate": 192,
+                "favicon": "https://cloud.rtl.it/assets/www.rtl.it/3.0.64/img/logo/favicon-96x96.png",
+                "url_resolved": "https://dd782ed59e2a4e86aabf6fc508674b59.msvdn.net/live/S97044836/tbbP8T1ZRPBL/playlist_audio.m3u8",
+                "url": "https://dd782ed59e2a4e86aabf6fc508674b59.msvdn.net/live/S97044836/tbbP8T1ZRPBL/playlist_audio.m3u8",
+                "color": "#4338ca"
+            },
+            {
+                "name": "Radio 105 Network",
+                "stationuuid": "9619ea14-0601-11e8-ae97-52543be04c81",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "hits,mediaset,pop",
+                "bitrate": 128,
+                "favicon": "https://upload.wikimedia.org/wikipedia/it/0/01/105.png",
+                "url_resolved": "http://icecast.unitedradio.it/Radio105.mp3",
+                "url": "http://icecast.unitedradio.it/Radio105.mp3",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "Rai Radio 1",
+                "stationuuid": "370437b8-878d-4efd-b4f5-17f060a49a6e",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "music,news,pop",
+                "bitrate": 256,
+                "favicon": "https://www.raicom.rai.it/wp-content/uploads/2021/12/RADIO1-1024x1024.jpg",
+                "url_resolved": "http://icestreaming.rai.it/1.mp3",
+                "url": "http://icestreaming.rai.it/1.mp3",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "Rai Radio 3",
+                "stationuuid": "9608eb3e-0601-11e8-ae97-52543be04c81",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "classical,culture,public radio",
+                "bitrate": 320,
+                "favicon": "",
+                "url_resolved": "http://icestreaming.rai.it/3.mp3",
+                "url": "http://icestreaming.rai.it/3.mp3",
+                "color": "#0369a1"
+            },
+            {
+                "name": "Radio 105",
+                "stationuuid": "77601de4-40ed-11ea-a9fa-52543be04c81",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 128,
+                "favicon": "",
+                "url_resolved": "https://icecast.unitedradio.it/Radio105.mp3",
+                "url": "https://icecast.unitedradio.it/Radio105.mp3",
+                "color": "#0f766e"
+            },
+            {
+                "name": "50s 60s RETRO HITS",
+                "stationuuid": "5532c4d9-616e-4d62-a49f-984a13e3189c",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "50s,60s,classic hits",
+                "bitrate": 128,
+                "favicon": "https://static.wixstatic.com/media/f361b3_ea9b293c1b80488d97f24981e7c6c1d3~mv2.jpg",
+                "url_resolved": "https://stream.zeno.fm/pxzwykxbluitv",
+                "url": "https://stream.zeno.fm/pxzwykxbluitv",
+                "color": "#15803d"
+            },
+            {
+                "name": "Virgin Radio Classic Rock",
+                "stationuuid": "9619f126-0601-11e8-ae97-52543be04c81",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "classic rock,mediaset",
+                "bitrate": 128,
+                "favicon": "",
+                "url_resolved": "http://icy.unitedradio.it/VirginRockClassics.mp3",
+                "url": "http://icy.unitedradio.it/VirginRockClassics.mp3",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "Rai Radio 2",
+                "stationuuid": "96181819-0601-11e8-ae97-52543be04c81",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "public radio,rai",
+                "bitrate": 256,
+                "favicon": "",
+                "url_resolved": "http://icestreaming.rai.it/2.mp3",
+                "url": "http://icestreaming.rai.it/2.mp3",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "Virgin Radio Italia",
+                "stationuuid": "9619eb8a-0601-11e8-ae97-52543be04c81",
+                "country": "Itália",
+                "countrycode": "IT",
+                "tags": "mediaset,pop rock",
+                "bitrate": 128,
+                "favicon": "http://www.virginradio.it/favicon_2.ico?v=1722509813651",
+                "url_resolved": "http://icecast.unitedradio.it/Virgin.mp3",
+                "url": "http://icecast.unitedradio.it/Virgin.mp3",
+                "color": "#4338ca"
+            }
+        ]
+    },
+    {
+        "id": "canada",
+        "country": "Canadá",
+        "flag": "🇨🇦",
+        "code": "CA",
+        "stations": [
+            {
+                "name": "# RdMix Classic Rock 70s 80s 90s",
+                "stationuuid": "7afae7e3-8d06-42f5-b59e-a52d6e09e60e",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "60s,60s and 70s.,70's",
+                "bitrate": 128,
+                "favicon": "https://static.wixstatic.com/media/f361b3_1bad7e5fb9a54196b2ac2c2fe71d6e4f~mv2.jpg",
+                "url_resolved": "https://cast1.torontocast.com:4610/stream",
+                "url": "https://cast1.torontocast.com:4610/stream",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "#100 BEST IBIZA DEEP HOUSE",
+                "stationuuid": "64d74c72-025e-4cea-8a32-906812691731",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "chill,chill house,chillout",
+                "bitrate": 128,
+                "favicon": "https://static.wixstatic.com/media/f361b3_cf8747dc2b804de09c56359c324dd1f5~mv2.jpg",
+                "url_resolved": "https://stream.zeno.fm/lwv6zqgtv1dtv",
+                "url": "https://stream.zeno.fm/lwv6zqgtv1dtv",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "AIRPORT LOUNGE RADIO",
+                "stationuuid": "02569932-0b3c-4938-9d3e-b00b2158d40b",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "aereoporto,airport,ambient",
+                "bitrate": 128,
+                "favicon": "https://favicon-generator.org/favicon-generator/htdocs/favicons/2023-12-16/9274e8a4803971186ff5c45359ab77a4.ico.png",
+                "url_resolved": "https://az1.mediacp.eu/listen/airport-lounge-radio/radio.mp3",
+                "url": "https://az1.mediacp.eu/listen/airport-lounge-radio/radio.mp3",
+                "color": "#0369a1"
+            },
+            {
+                "name": "# 100 GREATEST HEAVY METAL",
+                "stationuuid": "d0df2a51-9cd3-4f3e-977d-aab92ddef7a3",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "60's,60s,70's",
+                "bitrate": 192,
+                "favicon": "https://static.wixstatic.com/media/f361b3_a5ce07773ea14d209785044fbeb26dca~mv2.jpg",
+                "url_resolved": "https://cast1.torontocast.com:4660/stream",
+                "url": "https://cast1.torontocast.com:4660/stream",
+                "color": "#0f766e"
+            },
+            {
+                "name": "# 70s 80s 90s RdMix Network",
+                "stationuuid": "cf14b5ee-f03e-4468-8ce1-379f171fd8c4",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "00's,00s,192kbps",
+                "bitrate": 192,
+                "favicon": "",
+                "url_resolved": "https://cast1.torontocast.com:1830/stream",
+                "url": "https://cast1.torontocast.com:1830/stream",
+                "color": "#15803d"
+            },
+            {
+                "name": "CBC Radio 1 Toronto",
+                "stationuuid": "147a830e-fbc3-4260-9504-6dcc62530923",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "public radio",
+                "bitrate": 48,
+                "favicon": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP._kBBu0jkxW7vsBMbUIlxpwHaJA%26pid%3DApi&f=1",
+                "url_resolved": "https://cbcradiolive.akamaized.net/hls/live/2041036/ES_R1ETR/master.m3u8",
+                "url": "https://cbcradiolive.akamaized.net/hls/live/2041036/ES_R1ETR/master.m3u8",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "REGGAE CHILL CAFE",
+                "stationuuid": "a3253a96-a1ba-4cf5-bf4b-ec7988afcfd3",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "chill,chillout,dancehall",
+                "bitrate": 128,
+                "favicon": "",
+                "url_resolved": "https://maggie.torontocast.com:2020/stream/reggaechillcafe",
+                "url": "https://maggie.torontocast.com:2020/stream/reggaechillcafe",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "# RdMix DJSET 70s 80s 90s",
+                "stationuuid": "6cb69b95-72d9-4ea6-859f-52546a85c1fe",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "1970s,1980s,1990s",
+                "bitrate": 128,
+                "favicon": "https://static.wixstatic.com/media/f361b3_ee09b4fc28354c5287c3be2392e0b1e3~mv2.png",
+                "url_resolved": "https://cast1.torontocast.com:4560/stream",
+                "url": "https://cast1.torontocast.com:4560/stream",
+                "color": "#4338ca"
+            },
+            {
+                "name": "# 100 GREATEST JAZZ LOUNGE BAR",
+                "stationuuid": "4cc3e959-b572-4285-99e2-069151d03b5e",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "192kbps,chillout,chillout+lounge",
+                "bitrate": 192,
+                "favicon": "https://static.wixstatic.com/media/f361b3_2722a2a63db342f0901576a0168f2571~mv2.jpg",
+                "url_resolved": "https://cast1.torontocast.com:4640/stream",
+                "url": "https://cast1.torontocast.com:4640/stream",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "100% ACID JAZZ",
+                "stationuuid": "34a15ee8-a71b-4004-8fce-83650b46af66",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "acid,acid jazz,ambient",
+                "bitrate": 128,
+                "favicon": "https://d1ujqdpfgkvqfi.cloudfront.net/favicon-generator/htdocs/favicons/2024-10-25/f83dbfeda4fbcf3399eb5afd0949c4b1.ico.png",
+                "url_resolved": "https://mpc1.mediacp.eu:8356/stream",
+                "url": "https://mpc1.mediacp.eu:8356/stream",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "A MISSISSIPPI BLUES",
+                "stationuuid": "a2b92b15-ce28-4007-a756-b431abeb1059",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "blues,bluesrock,canada",
+                "bitrate": 320,
+                "favicon": "https://d1ujqdpfgkvqfi.cloudfront.net/favicon-generator/htdocs/favicons/2025-04-26/7358e7e8c2649a65c1a9d821887e32e3.ico.png",
+                "url_resolved": "https://cast1.torontocast.com:4450/;?type=http&nocache=1745625391",
+                "url": "https://cast1.torontocast.com:4450/;?type=http&nocache=1745625391",
+                "color": "#0369a1"
+            },
+            {
+                "name": "加拿大中文电台FM.96.1",
+                "stationuuid": "8e8f1791-1408-49f7-a4fb-b7c7e2fb3636",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "96.1,96.1 fm,music",
+                "bitrate": 48,
+                "favicon": "",
+                "url_resolved": "https://5b2959fe11444.streamlock.net/radio/fm961.stream/playlist.m3u8",
+                "url": "https://5b2959fe11444.streamlock.net/radio/fm961.stream/playlist.m3u8",
+                "color": "#0f766e"
+            },
+            {
+                "name": "# RdMix Italo Disco 80s",
+                "stationuuid": "e9577c10-e299-4bb8-9313-c6cc2070c1f3",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "1980,1980s,1980s hits",
+                "bitrate": 192,
+                "favicon": "https://static.wixstatic.com/media/f361b3_12e18c80af1f44a283eb3115b0ddd750~mv2.jpg",
+                "url_resolved": "https://cast1.torontocast.com:2130/stream",
+                "url": "https://cast1.torontocast.com:2130/stream",
+                "color": "#15803d"
+            },
+            {
+                "name": "SENSUAL LOUNGE RADIO",
+                "stationuuid": "75db29d2-9abd-4b2b-b16c-a8decd86a587",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "ambient,ambient lounge,canada",
+                "bitrate": 320,
+                "favicon": "https://d1ujqdpfgkvqfi.cloudfront.net/favicon-generator/htdocs/favicons/2025-02-16/253ad4a8eaed27bf80efa9d428914089.ico.png",
+                "url_resolved": "https://kathy.torontocast.com:3590/;?type=http&nocache=1739707069",
+                "url": "https://kathy.torontocast.com:3590/;?type=http&nocache=1739707069",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "100 % COVERS LOUNGE",
+                "stationuuid": "77871905-48cd-465c-8d25-dd14ae536656",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "ambient,ambient and relaxation music,bossa nova",
+                "bitrate": 128,
+                "favicon": "",
+                "url_resolved": "https://az1.mediacp.eu/listen/100coverslounge/radio.mp3",
+                "url": "https://az1.mediacp.eu/listen/100coverslounge/radio.mp3",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "680 News Toronto",
+                "stationuuid": "44db1e25-6942-11ea-b1cf-52543be04c81",
+                "country": "Canadá",
+                "countrycode": "CA",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 47,
+                "favicon": "https://www.680news.com/favicon.ico",
+                "url_resolved": "https://rogers-hls.leanstream.co/rogers/tor680.stream/playlist.m3u8",
+                "url": "https://rogers-hls.leanstream.co/rogers/tor680.stream/playlist.m3u8",
+                "color": "#4338ca"
+            }
+        ]
+    },
+    {
+        "id": "argentina",
+        "country": "Argentina",
+        "flag": "🇦🇷",
+        "code": "AR",
+        "stations": [
+            {
+                "name": "La 100",
+                "stationuuid": "7b03996e-6ea0-4db5-8168-ddd1463faec2",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "99.9 fm,argentina,buenos aires",
+                "bitrate": 96,
+                "favicon": "http://cdn-profiles.tunein.com/s6984/images/logod.jpg",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/FM999_56.mp3",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/FM999_56.mp3",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "Radio 10",
+                "stationuuid": "7bc38611-e8d6-494d-9f71-2c1be5341f12",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 65,
+                "favicon": "https://www.radio10.com.ar/css-custom/220/favicons/apple-touch-icon-120x120.png",
+                "url_resolved": "https://radio10.stweb.tv/radio10/live/playlist.m3u8",
+                "url": "https://radio10.stweb.tv/radio10/live/playlist.m3u8",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "Radio La Red AM 910. Ciudad de Buenos Aires",
+                "stationuuid": "5440e89d-708d-4336-9b42-fa274ed093b1",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 64,
+                "favicon": "",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/LA_RED_AM910AAC.aac",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/LA_RED_AM910AAC.aac",
+                "color": "#0369a1"
+            },
+            {
+                "name": "Mitre AM 790. AAC Alta. Ciudad de Buenos Aires",
+                "stationuuid": "f006d4dc-9771-4109-bf35-eb09291320da",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 64,
+                "favicon": "https://cloudfront-arc.cienradios.com/radiomitre/favicons/apple-icon-120x120.png",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM790_56AAC.aac",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM790_56AAC.aac",
+                "color": "#0f766e"
+            },
+            {
+                "name": "Aspen 102.3",
+                "stationuuid": "4285a122-9c78-417e-879e-5440c0482c56",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 96,
+                "favicon": "https://fmaspen.com/wp-content/themes/aspen/images/logoaspen.png",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3",
+                "color": "#15803d"
+            },
+            {
+                "name": "Radio Mitre",
+                "stationuuid": "c0cf2d87-993c-4cb6-97ad-f508a3fc5495",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "news",
+                "bitrate": 64,
+                "favicon": "https://cloudfront-arc.cienradios.com/radiomitre/favicons/apple-icon-120x120.png",
+                "url_resolved": "http://playerservices.streamtheworld.com/api/livestream-redirect/AM790_56AAC_SC",
+                "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/AM790_56AAC_SC",
+                "color": "#b91c1c"
+            },
+            {
+                "name": "Radio Disney 94.3",
+                "stationuuid": "9257ed3b-c422-43cf-a8dd-8165861b3187",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "94.3 fm,américa,argentina",
+                "bitrate": 128,
+                "favicon": "https://cdn-profiles.tunein.com/s13659/images/logog.png",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/DISNEY_ARG_BA_ADP.aac",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/DISNEY_ARG_BA_ADP.aac",
+                "color": "#7c2d12"
+            },
+            {
+                "name": "La Popu",
+                "stationuuid": "47d1e0f9-ce15-4557-a73c-a703b3762d06",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "cuarteto,local news,music",
+                "bitrate": 128,
+                "favicon": "https://www.lapopu.com.ar/img/favicon.png",
+                "url_resolved": "https://liveradio.mediainbox.net/popular.mp3",
+                "url": "https://liveradio.mediainbox.net/popular.mp3",
+                "color": "#4338ca"
+            },
+            {
+                "name": "FM Soldados 87.5",
+                "stationuuid": "ee8db61a-1cc3-409f-bb4f-69b17b7861d6",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 32,
+                "favicon": "https://fmsoldados.com/favicon.png",
+                "url_resolved": "https://radio02.ferozo.com/proxy/ra01000409?mp=/stream",
+                "url": "https://radio02.ferozo.com/proxy/ra01000409?mp=/stream",
+                "color": "#6b21a8"
+            },
+            {
+                "name": "Radio Rivadavia AM 630. Ciudad de Buenos Aires",
+                "stationuuid": "3c6c111c-6bbc-44ae-8ad8-46b502b3002a",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "hits,pop,ao vivo",
+                "bitrate": 64,
+                "favicon": "https://rivadavia.com.ar/apple-touch-icon.png",
+                "url_resolved": "https://playerservices.streamtheworld.com/api/livestream-redirect/RIVADAVIAAAC.aac",
+                "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RIVADAVIAAAC.aac",
+                "color": "#1e3a8a"
+            },
+            {
+                "name": "FM 90 Saladillo FM 90.7",
+                "stationuuid": "93a6169c-8fd4-42fa-b1f4-9a958c13a9a2",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "news talk music",
+                "bitrate": 32,
+                "favicon": "",
+                "url_resolved": "https://chino.republicahosting.com:2316/live",
+                "url": "https://chino.republicahosting.com:2316/live",
+                "color": "#0369a1"
+            },
+            {
+                "name": "Radio Con Vos 89.9",
+                "stationuuid": "ae7694a3-d499-11e9-a861-52543be04c81",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "news,pop,rock",
+                "bitrate": 67,
+                "favicon": "",
+                "url_resolved": "https://server1.stweb.tv/rcvos/live/playlist.m3u8",
+                "url": "https://server1.stweb.tv/rcvos/live/playlist.m3u8",
+                "color": "#0f766e"
+            },
+            {
+                "name": "neverland",
+                "stationuuid": "2df8d43a-3950-4596-b854-cd8aa1c2c236",
+                "country": "Argentina",
+                "countrycode": "AR",
+                "tags": "anime,anime radio,jazz",
+                "bitrate": 128,
+                "favicon": "https://discord.do/wp-content/uploads/2023/08/Neverland-Fandub.jpg",
+                "url_resolved": "https://stream-166.zeno.fm/oaqigxpfjzqvv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiJvYXFpZ3hwZmp6cXZ2IiwiaG9zdCI6InN0cmVhbS0xNjYuemVuby5mbSIsInJ0dGwiOjUsImp0aSI6IjFnRWVwSWpIUXJXVElZSU1pLVlrenciLCJpYXQiOjE3NDgxMzU4OTUsImV4cCI6MTc0ODEzNTk1NX0.b4Llu6iAJk1NPa2U9OhIjm_3CZQyLuRJZWiNecQWBdY",
+                "url": "https://stream-166.zeno.fm/oaqigxpfjzqvv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiJvYXFpZ3hwZmp6cXZ2IiwiaG9zdCI6InN0cmVhbS0xNjYuemVuby5mbSIsInJ0dGwiOjUsImp0aSI6IjFnRWVwSWpIUXJXVElZSU1pLVlrenciLCJpYXQiOjE3NDgxMzU4OTUsImV4cCI6MTc0ODEzNTk1NX0.b4Llu6iAJk1NPa2U9OhIjm_3CZQyLuRJZWiNecQWBdY",
+                "color": "#15803d"
             }
         ]
     }
 ];
 
-// Chamada resiliente para a Radio Browser API com rotação de espelhos
-async function fetchRadioBrowserAPI(path) {
+// Busca em espelhos redundantes da Radio Browser API
+async function fetchRadioBrowserAPI(endpoint) {
     for (let i = 0; i < RADIO_API_SERVERS.length; i++) {
-        const srv = RADIO_API_SERVERS[(currentRadioServerIdx + i) % RADIO_API_SERVERS.length];
+        const server = RADIO_API_SERVERS[(currentRadioServerIdx + i) % RADIO_API_SERVERS.length];
         try {
             const controller = new AbortController();
-            const tid = setTimeout(() => controller.abort(), 6000);
-            const res = await fetch(`${srv}${path}`, {
-                signal: controller.signal,
-                headers: { 'User-Agent': 'MusicPlaylistWeb/2.0' }
+            const timeout = setTimeout(() => controller.abort(), 4500);
+            const res = await fetch(`${server}${endpoint}`, {
+                headers: { 'User-Agent': 'PedroxiousMusic/2.0' },
+                signal: controller.signal
             });
-            clearTimeout(tid);
+            clearTimeout(timeout);
             if (res.ok) {
                 currentRadioServerIdx = (currentRadioServerIdx + i) % RADIO_API_SERVERS.length;
                 return await res.json();
             }
         } catch (e) {
-            console.warn(`Servidor de rádio ${srv} indisponível, tentando próximo...`);
+            // Continua para o próximo espelho
         }
     }
-    throw new Error('Servidores da Radio Browser API temporariamente inacessíveis.');
+    return [];
 }
 
 // Gera um avatar / logo SVG moderno quando a rádio não tiver imagem oficial
@@ -4104,7 +5289,7 @@ function generateRadioFallbackAvatar(name, color = '#182234') {
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
-// Cria o elemento Card da Rádio (Estilo Spotify: Imagem no topo, título, subtítulo e botão de play no hover)
+// Cria o elemento Card da Rádio (Estilo Spotify UI com capa, status e botão play overlay)
 function createRadioCardElement(station) {
     const card = document.createElement('div');
     card.className = 'radio_station_card';
@@ -4118,7 +5303,6 @@ function createRadioCardElement(station) {
     const fallbackImg = generateRadioFallbackAvatar(station.name, station.color || '#1e3a8a');
     const imgSrc = station.favicon && station.favicon.startsWith('http') ? station.favicon : fallbackImg;
 
-    // Subtítulo elegante com país / localização e tags (estilo Spotify da imagem)
     const tags = (station.tags || 'Ao vivo').split(',').slice(0, 2).map(t => t.trim()).join(' • ');
     const subtitle = `${station.country || 'Online'} • ${tags}`;
 
@@ -4149,7 +5333,7 @@ function createRadioCardElement(station) {
     return card;
 }
 
-// Renderiza todas as categorias de listas empilhadas por país (Brasil no topo, EUA, Reino Unido, Portugal, etc.)
+// Renderiza todas as listas empilhadas por país conforme a seleção da caixa de seleção e filtros de gênero
 function renderStackedRadioSections() {
     const container = document.getElementById('radio_stacked_sections');
     const loadingEl = document.getElementById('radio_loading_state');
@@ -4161,38 +5345,71 @@ function renderStackedRadioSections() {
     container.innerHTML = '';
 
     const q = radioSearchQuery.toLowerCase().trim();
-    const filter = radioActiveFilter.toLowerCase().trim();
+    const genre = radioSelectedGenre.toLowerCase().trim();
+    const country = radioSelectedCountry.toLowerCase().trim();
+
+    // Determina a ordem e filtragem das seções conforme a caixa de seleção de países
+    let sectionsToRender = [...CURATED_RADIO_SECTIONS];
+
+    if (country !== 'all') {
+        const foundIndex = sectionsToRender.findIndex(sec => 
+            sec.id.toLowerCase() === country || 
+            sec.country.toLowerCase() === country ||
+            (sec.code && sec.code.toLowerCase() === country)
+        );
+
+        if (foundIndex !== -1) {
+            // Mostra o país selecionado em prioridade absoluta no topo
+            const selectedSec = sectionsToRender[foundIndex];
+            sectionsToRender = [selectedSec];
+        }
+    }
 
     let totalVisible = 0;
 
-    CURATED_RADIO_SECTIONS.forEach(sec => {
-        // Verifica se o filtro ativo restringe a um país específico
-        if (filter !== 'all') {
-            const isCountryMatch = sec.country.toLowerCase().includes(filter) || sec.id.toLowerCase().includes(filter);
-            const isGenreFilter = ['pop', 'rock', 'sertanejo', 'mpb', 'flashback', 'news', 'electronic', 'jazz'].includes(filter);
-            if (!isCountryMatch && !isGenreFilter) {
-                return;
-            }
-        }
-
-        // Filtra as estações da seção
+    sectionsToRender.forEach(sec => {
         const matchingStations = sec.stations.filter(station => {
-            // Busca textual (nome, tags, país ou localização)
+            // Busca textual (nome, tags, país)
             if (q) {
-                const nameMatch = station.name.toLowerCase().includes(q);
+                const nameMatch = (station.name || '').toLowerCase().includes(q);
                 const tagMatch = (station.tags || '').toLowerCase().includes(q);
                 const countryMatch = (station.country || '').toLowerCase().includes(q);
-                const locMatch = (station.location || '').toLowerCase().includes(q);
-                if (!nameMatch && !tagMatch && !countryMatch && !locMatch) return false;
+                if (!nameMatch && !tagMatch && !countryMatch) return false;
             }
 
-            // Filtro por gênero se ativo
-            if (filter !== 'all') {
-                const isGenreFilter = ['pop', 'rock', 'sertanejo', 'mpb', 'flashback', 'news', 'electronic', 'jazz'].includes(filter);
-                if (isGenreFilter) {
-                    const tagMatch = (station.tags || '').toLowerCase().includes(filter);
-                    if (!tagMatch) return false;
+            // Filtro por Gênero Musical (Apenas gêneros por ordem de mais ouvidos)
+            if (genre !== 'all') {
+                const tagsStr = (station.tags || '').toLowerCase();
+                const nameStr = (station.name || '').toLowerCase();
+
+                let genreMatch = false;
+                if (genre === 'pop') {
+                    genreMatch = tagsStr.includes('pop') || tagsStr.includes('hit') || tagsStr.includes('top40') || tagsStr.includes('jovem');
+                } else if (genre === 'rock') {
+                    genreMatch = tagsStr.includes('rock') || tagsStr.includes('metal') || tagsStr.includes('alternative') || tagsStr.includes('indie');
+                } else if (genre === 'sertanejo') {
+                    genreMatch = tagsStr.includes('sertanejo') || tagsStr.includes('country') || tagsStr.includes('popular') || nameStr.includes('sertanej');
+                } else if (genre === 'electronic') {
+                    genreMatch = tagsStr.includes('electronic') || tagsStr.includes('dance') || tagsStr.includes('edm') || tagsStr.includes('house') || tagsStr.includes('techno') || tagsStr.includes('club') || tagsStr.includes('trance');
+                } else if (genre === 'mpb') {
+                    genreMatch = tagsStr.includes('mpb') || tagsStr.includes('samba') || tagsStr.includes('bossa') || tagsStr.includes('brasileira') || tagsStr.includes('pagode');
+                } else if (genre === 'flashback') {
+                    genreMatch = tagsStr.includes('flashback') || tagsStr.includes('retro') || tagsStr.includes('classic') || tagsStr.includes('80') || tagsStr.includes('90') || tagsStr.includes('70') || tagsStr.includes('oldies') || tagsStr.includes('gold');
+                } else if (genre === 'hiphop') {
+                    genreMatch = tagsStr.includes('hiphop') || tagsStr.includes('rap') || tagsStr.includes('r&b') || tagsStr.includes('urban');
+                } else if (genre === 'news') {
+                    genreMatch = tagsStr.includes('news') || tagsStr.includes('notic') || tagsStr.includes('talk') || tagsStr.includes('jornal') || tagsStr.includes('info');
+                } else if (genre === 'jazz') {
+                    genreMatch = tagsStr.includes('jazz') || tagsStr.includes('blues') || tagsStr.includes('lounge') || tagsStr.includes('smooth');
+                } else if (genre === 'gospel') {
+                    genreMatch = tagsStr.includes('gospel') || tagsStr.includes('relig') || tagsStr.includes('crista') || tagsStr.includes('louvor');
+                } else if (genre === 'classical') {
+                    genreMatch = tagsStr.includes('classic') || tagsStr.includes('classica') || tagsStr.includes('instrumental') || tagsStr.includes('orchestra');
+                } else {
+                    genreMatch = tagsStr.includes(genre);
                 }
+
+                if (!genreMatch) return false;
             }
 
             return true;
@@ -4202,7 +5419,7 @@ function renderStackedRadioSections() {
 
         totalVisible += matchingStations.length;
 
-        // Cria a seção empilhada para este país (com título do país conforme pedido pelo usuário)
+        // Cria a seção empilhada para este país
         const sectionEl = document.createElement('section');
         sectionEl.className = 'radio_country_section';
         sectionEl.id = `radio_section_${sec.id}`;
@@ -4210,6 +5427,7 @@ function renderStackedRadioSections() {
         sectionEl.innerHTML = `
             <div class="radio_section_header">
                 <div class="radio_section_title_group">
+                    <span class="radio_country_flag_badge">${sec.flag || '🌐'}</span>
                     <h2 class="radio_country_title">${sec.country}</h2>
                     <span class="radio_section_count">${matchingStations.length} ${matchingStations.length === 1 ? 'estação' : 'estações'}</span>
                 </div>
@@ -4227,7 +5445,6 @@ function renderStackedRadioSections() {
     });
 
     if (totalVisible === 0) {
-        // Se a busca não encontrou resultados locais, busca dinamicamente na Radio Browser API mundial
         if (q.length >= 2) {
             searchRadioBrowserAPI(q);
         } else {
@@ -4298,21 +5515,30 @@ function updateRadioStationCards() {
             card.classList.add('is_playing');
             const circle = card.querySelector('.radio_overlay_circle');
             if (circle) {
-                circle.innerHTML = isPlaying ? 
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>' :
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>';
+                circle.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        ${isPlaying ? 
+                            '<path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>' :
+                            '<path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>'
+                        }
+                    </svg>
+                `;
             }
         } else {
             card.classList.remove('is_playing');
             const circle = card.querySelector('.radio_overlay_circle');
             if (circle) {
-                circle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>';
+                circle.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                    </svg>
+                `;
             }
         }
     });
 }
 
-// Reprodução de Estação de Rádio integrada ao Master Player
+// Reprodução de Estação de Rádio integrada ao Master Player com failover e auto-recuperação
 function playRadioStation(station) {
     if (activeRadioStation && (activeRadioStation.stationuuid === station.stationuuid || activeRadioStation.name === station.name) && isRadioStreaming) {
         if (isPlaying) {
@@ -4362,7 +5588,7 @@ function playRadioStation(station) {
     bar2.style.width = '100%';
     dot.style.left = '100%';
 
-    showToast(`Conectando à rádio ${station.name}...`);
+    showToast(`Sintonizando ${station.name}...`);
 
     music.play().then(() => {
         isPlaying = true;
@@ -4400,7 +5626,7 @@ function handleRadioError(station) {
     pauseIcon.style.display = 'none';
     if (wave) wave.classList.remove('active1');
     updateRadioStationCards();
-    showToast(`⚠️ Transmissão de "${station.name}" fora do ar no momento. Escolha outra rádio.`);
+    showToast(`⚠️ Transmissão de "${station.name}" instável no momento. Escolha outra rádio.`);
 }
 
 // Abre a Visualização da Rádio em SPA
@@ -4416,6 +5642,10 @@ function openRadioView() {
     // Oculta a barra de pesquisa da navbar superior conforme exigido
     const navSearch = document.getElementById('search_bar_container');
     if (navSearch) navSearch.style.display = 'none';
+
+    // Exibe o badge 'RADIO ONLINE AO VIVO' na navbar superior ao lado do avatar
+    const navLiveBadge = document.getElementById('radio_nav_live_indicator');
+    if (navLiveBadge) navLiveBadge.style.display = 'flex';
 
     if (artistPageView) artistPageView.style.display = 'none';
     const plPageView = document.getElementById('playlist_page_view');
@@ -4471,6 +5701,70 @@ function setActiveNavTab(tabName) {
     else if (tabName === 'library' && mobLib) mobLib.classList.add('active');
 }
 
+// Configura o Seletor Customizado Moderno de Países
+function setupRadioCountrySelect() {
+    const trigger = document.getElementById('radio_country_trigger');
+    const customSelect = document.getElementById('radio_custom_select');
+    const optionsMenu = document.getElementById('radio_country_options_menu');
+    const label = document.getElementById('radio_selected_country_label');
+    const flagEl = document.getElementById('radio_selected_flag');
+
+    if (!trigger || !customSelect || !optionsMenu) return;
+
+    // Toggle abrir/fechar dropdown ao clicar no botão
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = customSelect.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Fechar dropdown ao clicar fora
+    document.addEventListener('click', (e) => {
+        if (!customSelect.contains(e.target)) {
+            customSelect.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    // Evento de seleção em cada opção
+    const options = optionsMenu.querySelectorAll('.radio_option');
+    options.forEach(opt => {
+        opt.addEventListener('click', (e) => {
+            e.stopPropagation();
+            options.forEach(o => o.classList.remove('active'));
+            opt.classList.add('active');
+
+            const country = opt.dataset.country;
+            radioSelectedCountry = country;
+
+            const optFlag = opt.querySelector('.opt_flag') ? opt.querySelector('.opt_flag').textContent : '🌐';
+            const optName = opt.querySelector('.opt_name') ? opt.querySelector('.opt_name').textContent : 'Todos os Países';
+
+            if (label) label.textContent = country === 'all' ? 'Selecionar País' : optName;
+            if (flagEl) flagEl.textContent = optFlag;
+
+            customSelect.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+
+            // Renderiza novamente com a prioridade do país selecionado
+            renderStackedRadioSections();
+        });
+    });
+}
+
+// Configura as pílulas de filtros rápidos (apenas gêneros musicais)
+function setupRadioGenrePills() {
+    const pills = document.querySelectorAll('#radio_genre_pills .radio_pill');
+    pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+            pills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            radioSelectedGenre = pill.dataset.genre || 'all';
+            renderStackedRadioSections();
+        });
+    });
+}
+
 // Eventos da Rádio e Navegação
 const navRadioTab = document.getElementById('nav_radio_tab');
 if (navRadioTab) {
@@ -4493,7 +5787,7 @@ if (navLibraryTab) {
 const radioBackBtn = document.getElementById('radio_back_btn');
 if (radioBackBtn) radioBackBtn.addEventListener('click', returnToHomeView);
 
-// Busca exclusiva e totalmente funcional da Rádio (com debounce)
+// Busca exclusiva da Rádio (com debounce)
 const radioSearchInput = document.getElementById('radio_search_input');
 const radioSearchClear = document.getElementById('radio_search_clear');
 if (radioSearchInput) {
@@ -4520,17 +5814,6 @@ if (radioSearchClear) {
     });
 }
 
-// Pílulas de Filtros Rápidos (Todas, Brasil, EUA, Gêneros)
-const radioGenrePills = document.querySelectorAll('.radio_pill');
-radioGenrePills.forEach(pill => {
-    pill.addEventListener('click', () => {
-        radioGenrePills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        radioActiveFilter = pill.dataset.filter || 'all';
-        renderStackedRadioSections();
-    });
-});
-
 // Botão de Redefinir Filtros no estado vazio
 const radioResetBtn = document.getElementById('radio_empty_reset_btn');
 if (radioResetBtn) {
@@ -4538,9 +5821,22 @@ if (radioResetBtn) {
         if (radioSearchInput) radioSearchInput.value = '';
         radioSearchQuery = '';
         if (radioSearchClear) radioSearchClear.style.display = 'none';
-        radioActiveFilter = 'all';
+        radioSelectedCountry = 'all';
+        radioSelectedGenre = 'all';
 
-        radioGenrePills.forEach((p, idx) => {
+        const label = document.getElementById('radio_selected_country_label');
+        const flagEl = document.getElementById('radio_selected_flag');
+        if (label) label.textContent = 'Selecionar País';
+        if (flagEl) flagEl.textContent = '🌐';
+
+        const options = document.querySelectorAll('#radio_country_options_menu .radio_option');
+        options.forEach((o, idx) => {
+            if (idx === 0) o.classList.add('active');
+            else o.classList.remove('active');
+        });
+
+        const pills = document.querySelectorAll('#radio_genre_pills .radio_pill');
+        pills.forEach((p, idx) => {
             if (idx === 0) p.classList.add('active');
             else p.classList.remove('active');
         });
@@ -4549,11 +5845,10 @@ if (radioResetBtn) {
     });
 }
 
-/* ===== Sistema de Visualização da Biblioteca (SPA - Estilo Spotify Desktop) ===== */
-
-let currentLibraryFilter = 'all'; // 'all' | 'favorites'
-let currentLibrarySearch = '';
-let currentLibrarySort = 'date'; // 'custom' | 'name' | 'artist' | 'album' | 'date' | 'duration'
+// Inicializa os componentes e pré-renderiza a rádio imediatamente
+setupRadioCountrySelect();
+setupRadioGenrePills();
+renderStackedRadioSections();
 
 function openLibraryView() {
     activePlaylistId = null;

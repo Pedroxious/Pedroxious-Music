@@ -4073,8 +4073,32 @@ header .song_side.radio_mode .popular_artists {
 }
 
 /* Oculta a barra de pesquisa da navbar superior no modo rádio */
-header .song_side.radio_mode nav .search {
+header .song_side.radio_mode nav .search,
+header .song_side.radio_mode #search_bar_container {
   display: none !important;
+}
+
+/* Indicador "RADIO ONLINE AO VIVO" na navbar superior ao lado da foto de perfil */
+header .song_side nav .radio_nav_live_indicator {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #36e2ec;
+  letter-spacing: 0.8px;
+  background: rgba(54, 226, 236, 0.1);
+  padding: 6px 14px;
+  border-radius: 500px;
+  border: 1px solid rgba(54, 226, 236, 0.28);
+  box-shadow: 0 0 14px rgba(54, 226, 236, 0.2);
+  margin-left: auto;
+  margin-right: 18px;
+  user-select: none;
+}
+
+header .song_side.radio_mode nav .radio_nav_live_indicator {
+  display: flex !important;
 }
 
 header .song_side.radio_mode .artist_page_view {
@@ -4108,20 +4132,6 @@ header .song_side.radio_mode .radio_page_view {
   padding: 14px 28px 10px 28px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   flex-shrink: 0;
-}
-
-.radio_live_indicator {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #36e2ec;
-  letter-spacing: 0.8px;
-  background: rgba(54, 226, 236, 0.1);
-  padding: 5px 14px;
-  border-radius: 500px;
-  border: 1px solid rgba(54, 226, 236, 0.25);
 }
 
 .live_pulse_dot {
@@ -4164,12 +4174,13 @@ header .song_side.radio_mode .radio_page_view {
   background: #36e2ec;
 }
 
-/* Barra de Pesquisa Exclusiva da Rádio */
+/* Barra de Controles: Barra de Pesquisa e Seletor Moderno de Países Lado a Lado */
 .radio_controls_bar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
   flex-shrink: 0;
   width: 100%;
 }
@@ -4177,12 +4188,13 @@ header .song_side.radio_mode .radio_page_view {
 .radio_search_box {
   display: flex;
   align-items: center;
-  width: 100%;
+  flex: 1;
   max-width: 520px;
+  height: 42px;
   background: rgba(14, 20, 33, 0.85);
   border: 1px solid #1e2a3a;
   border-radius: 30px;
-  padding: 8px 18px;
+  padding: 0 18px;
   gap: 12px;
   color: #6b7080;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -4191,6 +4203,152 @@ header .song_side.radio_mode .radio_page_view {
 .radio_search_box:focus-within {
   border-color: #36e2ec;
   box-shadow: 0 0 14px rgba(54, 226, 236, 0.28);
+}
+
+/* Caixa de Seleção Moderna de Países */
+.radio_country_select_container {
+  position: relative;
+  min-width: 210px;
+  max-width: 250px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
+.radio_custom_select {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+.radio_select_trigger {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: rgba(14, 20, 33, 0.95);
+  border: 1px solid #1e2a3a;
+  border-radius: 30px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+  color: #e1e3e8;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.radio_select_trigger:hover,
+.radio_custom_select.open .radio_select_trigger {
+  border-color: #36e2ec;
+  box-shadow: 0 0 14px rgba(54, 226, 236, 0.28);
+}
+
+.radio_trigger_flag {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.radio_trigger_label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.radio_select_chevron {
+  color: #8b92a5;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.radio_custom_select.open .radio_select_chevron {
+  transform: rotate(180deg);
+  color: #36e2ec;
+}
+
+.radio_select_menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 230px;
+  max-height: 330px;
+  background: #0d1522;
+  border: 1px solid #1e2a3a;
+  border-radius: 14px;
+  padding: 6px 0;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75), 0 0 14px rgba(54, 226, 236, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.radio_select_menu::-webkit-scrollbar {
+  width: 5px;
+}
+.radio_select_menu::-webkit-scrollbar-thumb {
+  background: #1e2a3a;
+  border-radius: 10px;
+}
+.radio_select_menu::-webkit-scrollbar-thumb:hover {
+  background: #36e2ec;
+}
+
+.radio_custom_select.open .radio_select_menu {
+  display: flex;
+  animation: radioDropdownFade 0.2s ease forwards;
+}
+
+@keyframes radioDropdownFade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.radio_option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #b3b3b3;
+  transition: background 0.15s, color 0.15s;
+}
+
+.radio_option:hover {
+  background: rgba(54, 226, 236, 0.12);
+  color: #fff;
+}
+
+.radio_option.active {
+  background: rgba(54, 226, 236, 0.18);
+  color: #36e2ec;
+  font-weight: 600;
+}
+
+.radio_option .opt_flag {
+  font-size: 15px;
+}
+
+.radio_option .opt_name {
+  flex: 1;
+}
+
+.radio_option .opt_check {
+  font-size: 12px;
+  display: none;
+  color: #36e2ec;
+}
+
+.radio_option.active .opt_check {
+  display: inline-block;
 }
 
 .radio_search_box svg {

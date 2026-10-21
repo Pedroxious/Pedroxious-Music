@@ -515,6 +515,11 @@
                         <div class="suggestions_list" id="suggestions_list"></div>
                     </div>
                 </div>
+                <!-- Indicador 'RADIO ONLINE AO VIVO' na navbar superior ao lado da foto de perfil -->
+                <div class="radio_nav_live_indicator" id="radio_nav_live_indicator" style="display: none;">
+                    <span class="live_pulse_dot"></span>
+                    <span>RADIO ONLINE AO VIVO</span>
+                </div>
                 <div class="user">
                     <img src="img/perfil.jpeg" alt="">
                 </div>
@@ -1518,15 +1523,11 @@
                         </svg>
                         <span>Voltar para Início</span>
                     </button>
-                    <div class="radio_live_indicator">
-                        <span class="live_pulse_dot"></span>
-                        <span>RADIO ONLINE AO VIVO</span>
-                    </div>
                 </div>
 
                 <!-- Layout Principal da Rádio: Ocupando a tela toda, listas empilhadas por país (Estilo Spotify) -->
                 <main class="radio_main_content" id="radio_main_content">
-                    <!-- Barra de Pesquisa Exclusiva da Rádio -->
+                    <!-- Barra de Controles: Pesquisa na Esquerda e Seletor de Países na Direita (Mesma altura) -->
                     <div class="radio_controls_bar">
                         <div class="radio_search_box">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -1535,27 +1536,96 @@
                                     d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                             </svg>
                             <input type="text" id="radio_search_input"
-                                placeholder="Buscar rádio por nome, gênero ou país..." autocomplete="off">
+                                placeholder="Buscar rádio por nome ou gênero..." autocomplete="off">
                             <button id="radio_search_clear" class="radio_search_clear" title="Limpar busca"
                                 style="display:none;">&times;</button>
                         </div>
+
+                        <!-- Caixa de Seleção Moderna de Países (Na mesma altura da barra de busca, alinhada à direita) -->
+                        <div class="radio_country_select_container" id="radio_country_select_container">
+                            <div class="radio_custom_select" id="radio_custom_select">
+                                <div class="radio_select_trigger" id="radio_country_trigger" tabindex="0" role="button" aria-haspopup="listbox" aria-expanded="false" title="Filtrar estações por país">
+                                    <span class="radio_trigger_flag" id="radio_selected_flag">🌐</span>
+                                    <span class="radio_trigger_label" id="radio_selected_country_label">Selecionar País</span>
+                                    <svg class="radio_select_chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </div>
+                                <div class="radio_select_menu" id="radio_country_options_menu" role="listbox">
+                                    <div class="radio_option active" data-country="all" role="option">
+                                        <span class="opt_flag">🌐</span>
+                                        <span class="opt_name">Todos os Países</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                    <div class="radio_option" data-country="brasil" role="option">
+                                        <span class="opt_flag">🇧🇷</span>
+                                        <span class="opt_name">Brasil</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                    <div class="radio_option" data-country="estados_unidos" role="option">
+                                        <span class="opt_flag">🇺🇸</span>
+                                        <span class="opt_name">Estados Unidos</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                    <div class="radio_option" data-country="reino_unido" role="option">
+                                        <span class="opt_flag">🇬🇧</span>
+                                        <span class="opt_name">Reino Unido</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                    <div class="radio_option" data-country="portugal" role="option">
+                                        <span class="opt_flag">🇵🇹</span>
+                                        <span class="opt_name">Portugal</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                    <div class="radio_option" data-country="espanha" role="option">
+                                        <span class="opt_flag">🇪🇸</span>
+                                        <span class="opt_name">Espanha</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                    <div class="radio_option" data-country="franca" role="option">
+                                        <span class="opt_flag">🇫🇷</span>
+                                        <span class="opt_name">França</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                    <div class="radio_option" data-country="alemanha" role="option">
+                                        <span class="opt_flag">🇩🇪</span>
+                                        <span class="opt_name">Alemanha</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                    <div class="radio_option" data-country="italia" role="option">
+                                        <span class="opt_flag">🇮🇹</span>
+                                        <span class="opt_name">Itália</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                    <div class="radio_option" data-country="canada" role="option">
+                                        <span class="opt_flag">🇨🇦</span>
+                                        <span class="opt_name">Canadá</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                    <div class="radio_option" data-country="argentina" role="option">
+                                        <span class="opt_flag">🇦🇷</span>
+                                        <span class="opt_name">Argentina</span>
+                                        <span class="opt_check">✓</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Pílulas de Filtros Rápidos (Estilo Spotify: Todas, Brasil, Estados Unidos, etc.) -->
+                    <!-- Pílulas de Filtros Rápidos por Gênero Musical (Apenas gêneros por ordem de mais ouvidos) -->
                     <div class="radio_genre_pills" id="radio_genre_pills">
-                        <button class="radio_pill active" data-filter="all">Todas</button>
-                        <button class="radio_pill" data-filter="Brasil">Brasil</button>
-                        <button class="radio_pill" data-filter="Estados Unidos">Estados Unidos</button>
-                        <button class="radio_pill" data-filter="Reino Unido">Reino Unido</button>
-                        <button class="radio_pill" data-filter="Portugal">Portugal</button>
-                        <button class="radio_pill" data-filter="Espanha">Espanha</button>
-                        <button class="radio_pill" data-filter="pop">Pop & Hits</button>
-                        <button class="radio_pill" data-filter="rock">Rock</button>
-                        <button class="radio_pill" data-filter="sertanejo">Sertanejo</button>
-                        <button class="radio_pill" data-filter="mpb">MPB & Bossa</button>
-                        <button class="radio_pill" data-filter="flashback">Flashback</button>
-                        <button class="radio_pill" data-filter="news">Notícias</button>
-                        <button class="radio_pill" data-filter="electronic">Eletrônica</button>
+                        <button class="radio_pill active" data-genre="all">Todos os Gêneros</button>
+                        <button class="radio_pill" data-genre="pop">Pop & Hits</button>
+                        <button class="radio_pill" data-genre="rock">Rock</button>
+                        <button class="radio_pill" data-genre="sertanejo">Sertanejo</button>
+                        <button class="radio_pill" data-genre="electronic">Eletrônica & Dance</button>
+                        <button class="radio_pill" data-genre="mpb">MPB & Samba</button>
+                        <button class="radio_pill" data-genre="flashback">Flashback & 80s</button>
+                        <button class="radio_pill" data-genre="hiphop">Hip-Hop & R&B</button>
+                        <button class="radio_pill" data-genre="news">Notícias & Talk</button>
+                        <button class="radio_pill" data-genre="jazz">Jazz & Blues</button>
+                        <button class="radio_pill" data-genre="gospel">Gospel</button>
+                        <button class="radio_pill" data-genre="classical">Clássica</button>
                     </div>
 
                     <!-- Container onde as listas empilhadas por país serão renderizadas -->
