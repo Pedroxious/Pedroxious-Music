@@ -1524,172 +1524,63 @@
                     </div>
                 </div>
 
-                <!-- Layout Principal da Rádio: Trilho de Categorias + Área de Estações -->
-                <div class="radio_dashboard_layout">
-                    <!-- Trilho Esquerdo de Categorias / Filtros de Rádio (Estilo Imagem Anexada) -->
-                    <aside class="radio_categories_rail">
-                        <div class="rail_section_title">RÁDIOS</div>
-
-                        <button class="rail_category_btn active" data-category="top" id="cat_top_radios">
-                            <div class="rail_btn_left">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707zm2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 0 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708zm5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708zm2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM10 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
-                                </svg>
-                                <div class="rail_btn_texts">
-                                    <span class="rail_btn_main">Top Rádios</span>
-                                    <span class="rail_btn_sub">Mais ouvidas</span>
-                                </div>
-                            </div>
-                            <span class="rail_badge">TOP</span>
-                        </button>
-
-                        <button class="rail_category_btn" data-category="genres">
-                            <div class="rail_btn_left">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.814-.326a.5.5 0 0 0 .025-.917l-7.5-3.5zM1 7.633v4.012l6.5 2.6V10.23L1 7.633zm8 6.612 6.5-2.6V7.633l-6.5 2.6v4.012z" />
-                                </svg>
-                                <div class="rail_btn_texts">
-                                    <span class="rail_btn_main">Por Gêneros</span>
-                                    <span class="rail_btn_sub">Pop, Rock, Sertanejo...</span>
-                                </div>
-                            </div>
-                            <svg class="rail_arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                fill="currentColor" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                            </svg>
-                        </button>
-
-                        <button class="rail_category_btn" data-category="regions">
-                            <div class="rail_btn_left">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm6.5 7.5h-2.18a11.72 11.72 0 0 0-.7-3.56A6.52 6.52 0 0 1 14.5 7.5zM8 1.5c.78 0 1.95 2.11 2.28 6H5.72C6.05 3.61 7.22 1.5 8 1.5zM1.5 8.5h2.18c.15 1.25.4 2.45.7 3.56A6.52 6.52 0 0 1 1.5 8.5zm2.18-1H1.5A6.52 6.52 0 0 1 4.38 3.94c-.3 1.11-.55 2.31-.7 3.56zM8 14.5c-.78 0-1.95-2.11-2.28-6h4.56c-.33 3.89-1.5 6-2.28 6zm3.62-3.44c.3-1.11.55-2.31.7-3.56h2.18a6.52 6.52 0 0 1-2.88 3.56z" />
-                                </svg>
-                                <div class="rail_btn_texts">
-                                    <span class="rail_btn_main">Por Países</span>
-                                    <span class="rail_btn_sub">Brasil, Portugal, Mundo</span>
-                                </div>
-                            </div>
-                            <svg class="rail_arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                fill="currentColor" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                            </svg>
-                        </button>
-
-                        <button class="rail_category_btn" data-category="news">
-                            <div class="rail_btn_left">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5v-11zM12 14c.37 0 .654-.211.85-.497A.756.756 0 0 0 13 13.028V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5H12z" />
-                                    <path
-                                        d="M2 3h10v2H2V3zm0 3h4v3H2V6zm0 4h4v1H2v-1zm5-4h5v1H7V6zm0 2h5v1H7V8zm0 2h5v1H7v-1z" />
-                                </svg>
-                                <div class="rail_btn_texts">
-                                    <span class="rail_btn_main">Notícias & Talk</span>
-                                    <span class="rail_btn_sub">Jornalismo ao vivo</span>
-                                </div>
-                            </div>
-                        </button>
-
-                        <button class="rail_category_btn" data-category="recommended">
-                            <div class="rail_btn_left">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                </svg>
-                                <div class="rail_btn_texts">
-                                    <span class="rail_btn_main">Recomendadas</span>
-                                    <span class="rail_btn_sub">Melhores escolhas</span>
-                                </div>
-                            </div>
-                        </button>
-                    </aside>
-
-                    <!-- Área Central de Conteúdo da Rádio -->
-                    <main class="radio_main_content">
-                        <!-- Barra de Pesquisa e Filtros da Rádio -->
-                        <div class="radio_controls_bar">
-                            <div class="radio_search_box">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-search" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                </svg>
-                                <input type="text" id="radio_search_input"
-                                    placeholder="Buscar estação por nome ou gênero (ex: Antena 1, Mix, Rock, Sertanejo)...">
-                                <button id="radio_search_clear" class="radio_search_clear" title="Limpar busca"
-                                    style="display:none;">&times;</button>
-                            </div>
-
-                            <!-- Seletor de País -->
-                            <div class="radio_country_wrapper">
-                                <select id="radio_country_select" class="radio_country_select">
-                                    <option value="BR" selected>🇧🇷 Brasil</option>
-                                    <option value="PT">🇵🇹 Portugal</option>
-                                    <option value="US">🇺🇸 Estados Unidos</option>
-                                    <option value="GB">🇬🇧 Reino Unido</option>
-                                    <option value="ES">🇪🇸 Espanha</option>
-                                    <option value="DE">🇩🇪 Alemanha</option>
-                                    <option value="ALL">🌐 Todos os Países</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Pílulas de Gênero Rápido -->
-                        <div class="radio_genre_pills" id="radio_genre_pills">
-                            <button class="radio_pill active" data-genre="">Todas</button>
-                            <button class="radio_pill" data-genre="pop">Pop & Hits</button>
-                            <button class="radio_pill" data-genre="rock">Rock</button>
-                            <button class="radio_pill" data-genre="sertanejo">Sertanejo</button>
-                            <button class="radio_pill" data-genre="mpb">MPB</button>
-                            <button class="radio_pill" data-genre="electronic">Eletrônica</button>
-                            <button class="radio_pill" data-genre="flashback">Flashback</button>
-                            <button class="radio_pill" data-genre="jazz">Jazz & Bossa</button>
-                            <button class="radio_pill" data-genre="news">Notícias</button>
-                        </div>
-
-                        <!-- Cabeçalho da Seção Ativa -->
-                        <div class="radio_section_header">
-                            <div class="radio_section_title_group">
-                                <h2 id="radio_section_title">Top Rádios - Brasil</h2>
-                                <span id="radio_section_count" class="radio_section_count">Carregando...</span>
-                            </div>
-                        </div>
-
-                        <!-- Grid de Estações de Rádio -->
-                        <div class="radio_stations_grid" id="radio_stations_grid">
-                            <!-- Estações geradas dinamicamente via Radio Browser API -->
-                        </div>
-
-                        <!-- Estado de Carregamento -->
-                        <div class="radio_loading_state" id="radio_loading_state" style="display: none;">
-                            <div class="radio_spinner"></div>
-                            <p>Sintonizando frequências de rádio online...</p>
-                        </div>
-
-                        <!-- Estado Vazio / Erro -->
-                        <div class="radio_empty_state" id="radio_empty_state" style="display: none;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#36e2ec"
-                                viewBox="0 0 16 16">
+                <!-- Layout Principal da Rádio: Ocupando a tela toda, listas empilhadas por país (Estilo Spotify) -->
+                <main class="radio_main_content" id="radio_main_content">
+                    <!-- Barra de Pesquisa Exclusiva da Rádio -->
+                    <div class="radio_controls_bar">
+                        <div class="radio_search_box">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
                                 <path
-                                    d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707zm2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 0 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708zm5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708zm2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM10 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                             </svg>
-                            <h4 id="radio_empty_title">Nenhuma estação encontrada</h4>
-                            <p id="radio_empty_desc">Tente ajustar o termo de pesquisa ou selecionar outro gênero/país.
-                            </p>
-                            <button id="radio_empty_reset_btn" class="radio_empty_btn">Redefinir Filtros</button>
+                            <input type="text" id="radio_search_input"
+                                placeholder="Buscar rádio por nome, gênero ou país..." autocomplete="off">
+                            <button id="radio_search_clear" class="radio_search_clear" title="Limpar busca"
+                                style="display:none;">&times;</button>
                         </div>
-                    </main>
-                </div>
+                    </div>
+
+                    <!-- Pílulas de Filtros Rápidos (Estilo Spotify: Todas, Brasil, Estados Unidos, etc.) -->
+                    <div class="radio_genre_pills" id="radio_genre_pills">
+                        <button class="radio_pill active" data-filter="all">Todas</button>
+                        <button class="radio_pill" data-filter="Brasil">Brasil</button>
+                        <button class="radio_pill" data-filter="Estados Unidos">Estados Unidos</button>
+                        <button class="radio_pill" data-filter="Reino Unido">Reino Unido</button>
+                        <button class="radio_pill" data-filter="Portugal">Portugal</button>
+                        <button class="radio_pill" data-filter="Espanha">Espanha</button>
+                        <button class="radio_pill" data-filter="pop">Pop & Hits</button>
+                        <button class="radio_pill" data-filter="rock">Rock</button>
+                        <button class="radio_pill" data-filter="sertanejo">Sertanejo</button>
+                        <button class="radio_pill" data-filter="mpb">MPB & Bossa</button>
+                        <button class="radio_pill" data-filter="flashback">Flashback</button>
+                        <button class="radio_pill" data-filter="news">Notícias</button>
+                        <button class="radio_pill" data-filter="electronic">Eletrônica</button>
+                    </div>
+
+                    <!-- Container onde as listas empilhadas por país serão renderizadas -->
+                    <div class="radio_stacked_sections" id="radio_stacked_sections">
+                        <!-- Geradas dinamicamente: Seção Brasil, Seção Estados Unidos, Reino Unido, Portugal, Espanha, etc. -->
+                    </div>
+
+                    <!-- Estado de Carregamento -->
+                    <div class="radio_loading_state" id="radio_loading_state" style="display: none;">
+                        <div class="radio_spinner"></div>
+                        <p>Sintonizando frequências de rádio online...</p>
+                    </div>
+
+                    <!-- Estado Vazio / Erro -->
+                    <div class="radio_empty_state" id="radio_empty_state" style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#36e2ec"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707zm2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 0 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708zm5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708zm2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM10 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
+                        </svg>
+                        <h4 id="radio_empty_title">Nenhuma estação encontrada</h4>
+                        <p id="radio_empty_desc">Tente ajustar o termo de pesquisa ou selecionar outro filtro.</p>
+                        <button id="radio_empty_reset_btn" class="radio_empty_btn">Redefinir Filtros</button>
+                    </div>
+                </main>
             </div>
 
             <!-- Visão Página da Biblioteca (SPA - Estilo Spotify My Library) -->

@@ -1479,12 +1479,9 @@ header .song_side .popular_artists .item li:hover img {
     width: 110px;
   }
 
-  .radio_categories_rail {
-    width: 190px;
-  }
-
   .radio_stations_grid {
-    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
   }
 }
 
@@ -1781,80 +1778,53 @@ header .song_side .popular_artists .item li:hover img {
     transform: translateY(0) !important;
   }
 
-  /* Layout da Página de Rádio no Celular (Idêntico ao Spotify Browse All) */
+  /* Layout da Página de Rádio no Celular */
   .radio_nav_bar {
     padding: 10px 14px;
   }
 
-  .radio_dashboard_layout {
-    flex-direction: column !important;
-    overflow-y: auto !important;
+  .radio_main_content {
+    padding: 12px 14px 60px 14px !important;
   }
 
-  .radio_categories_rail {
-    width: 100% !important;
-    height: auto !important;
-    padding: 8px 12px !important;
-    display: flex !important;
-    flex-direction: row !important;
-    overflow-x: auto !important;
-    gap: 8px !important;
-    border-right: none !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-    flex-shrink: 0 !important;
-    -webkit-overflow-scrolling: touch;
+  .radio_controls_bar {
+    margin-bottom: 10px;
   }
 
-  .radio_categories_rail::-webkit-scrollbar {
-    display: none;
+  .radio_search_box {
+    max-width: 100%;
+    padding: 7px 14px;
   }
 
-  .rail_section_title {
-    display: none !important;
+  .radio_stacked_sections {
+    gap: 24px;
   }
 
-  .rail_category_btn {
-    padding: 6px 12px !important;
-    white-space: nowrap !important;
-    border-radius: 500px !important;
-    font-size: 11px !important;
-    flex-shrink: 0 !important;
-    width: auto !important;
-  }
-
-  .radio_stations_area {
-    padding: 12px !important;
-    overflow-y: visible !important;
-  }
-
-  .radio_top_controls {
-    flex-direction: column !important;
-    gap: 10px !important;
-  }
-
-  .radio_search_input_wrap,
-  .radio_country_wrap,
-  .radio_country_select {
-    width: 100% !important;
+  .radio_country_title {
+    font-size: 18px;
   }
 
   .radio_stations_grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 10px !important;
-    padding-bottom: 40px !important;
   }
 
   .radio_station_card {
-    padding: 8px !important;
-    border-radius: 12px !important;
+    padding: 10px !important;
+    border-radius: 8px !important;
   }
 
   .radio_card_title {
-    font-size: 11.5px !important;
+    font-size: 12px !important;
   }
 
   .radio_card_tags {
-    font-size: 9.5px !important;
+    font-size: 10px !important;
+  }
+
+  .radio_overlay_circle {
+    width: 36px;
+    height: 36px;
   }
 
   /* Telas de Artista e Playlist no Celular */
@@ -4102,6 +4072,11 @@ header .song_side.radio_mode .popular_artists {
   display: none !important;
 }
 
+/* Oculta a barra de pesquisa da navbar superior no modo rádio */
+header .song_side.radio_mode nav .search {
+  display: none !important;
+}
+
 header .song_side.radio_mode .artist_page_view {
   display: none !important;
 }
@@ -4164,137 +4139,16 @@ header .song_side.radio_mode .radio_page_view {
   100% { transform: scale(0.9); opacity: 0.6; }
 }
 
-/* Layout em duas colunas: Trilho de Categorias + Grade de Rádios */
-.radio_dashboard_layout {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-  overflow: hidden;
-}
-
-/* Trilho Esquerdo de Categorias (Estilo Spotify/Radio Dashboard) */
-.radio_categories_rail {
-  width: 220px;
-  background: rgba(13, 17, 23, 0.5);
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 16px 12px;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  overflow-y: auto;
-}
-
-.radio_categories_rail::-webkit-scrollbar {
-  width: 3px;
-}
-
-.radio_categories_rail::-webkit-scrollbar-thumb {
-  background: #1e2a3a;
-}
-
-.rail_section_title {
-  font-size: 11px;
-  font-weight: 700;
-  color: #6b7080;
-  letter-spacing: 0.8px;
-  margin-bottom: 12px;
-  padding-left: 6px;
-}
-
-.rail_category_btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 9px 12px;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: #8b92a5;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-bottom: 4px;
-  font-family: inherit;
-  text-align: left;
-}
-
-.rail_category_btn:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-}
-
-.rail_category_btn.active {
-  background: rgba(54, 226, 236, 0.12);
-  border-color: rgba(54, 226, 236, 0.3);
-  color: #36e2ec;
-}
-
-.rail_btn_left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  overflow: hidden;
-}
-
-.rail_category_btn svg {
-  flex-shrink: 0;
-}
-
-.rail_btn_texts {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.rail_btn_main {
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.rail_btn_sub {
-  font-size: 10px;
-  color: #6b7080;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.rail_category_btn.active .rail_btn_sub {
-  color: #8bebf0;
-}
-
-.rail_badge {
-  font-size: 9px;
-  font-weight: 700;
-  background: rgba(54, 226, 236, 0.2);
-  color: #36e2ec;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-.rail_arrow {
-  color: #4c5262;
-  transition: transform 0.2s;
-}
-
-.rail_category_btn:hover .rail_arrow {
-  color: #fff;
-  transform: translateX(2px);
-}
-
-/* Área Central de Conteúdo da Rádio */
+/* Área Central de Conteúdo da Rádio - Ocupando a tela inteira */
 .radio_main_content {
   flex: 1;
   min-width: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 16px 28px 40px 28px;
+  padding: 18px 32px 50px 32px;
 }
 
 .radio_main_content::-webkit-scrollbar {
@@ -4310,31 +4164,38 @@ header .song_side.radio_mode .radio_page_view {
   background: #36e2ec;
 }
 
-/* Barra de Controles: Busca e Seletor de País */
+/* Barra de Pesquisa Exclusiva da Rádio */
 .radio_controls_bar {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .radio_search_box {
   display: flex;
   align-items: center;
-  flex: 1;
-  background: rgba(14, 20, 33, 0.8);
+  width: 100%;
+  max-width: 520px;
+  background: rgba(14, 20, 33, 0.85);
   border: 1px solid #1e2a3a;
   border-radius: 30px;
-  padding: 7px 16px;
-  gap: 10px;
+  padding: 8px 18px;
+  gap: 12px;
   color: #6b7080;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .radio_search_box:focus-within {
   border-color: #36e2ec;
-  box-shadow: 0 0 12px rgba(54, 226, 236, 0.25);
+  box-shadow: 0 0 14px rgba(54, 226, 236, 0.28);
+}
+
+.radio_search_box svg {
+  color: #8b92a5;
+  flex-shrink: 0;
 }
 
 .radio_search_box input {
@@ -4342,53 +4203,38 @@ header .song_side.radio_mode .radio_page_view {
   border: none;
   outline: none;
   color: #e1e3e8;
-  font-size: 13px;
+  font-size: 13.5px;
   width: 100%;
   font-family: inherit;
+}
+
+.radio_search_box input::placeholder {
+  color: #6b7080;
 }
 
 .radio_search_clear {
   background: none;
   border: none;
   color: #6b7080;
-  font-size: 16px;
+  font-size: 18px;
+  line-height: 1;
   cursor: pointer;
   padding: 0 4px;
+  transition: color 0.15s;
 }
 
 .radio_search_clear:hover {
   color: #fff;
 }
 
-.radio_country_wrapper {
-  flex-shrink: 0;
-}
-
-.radio_country_select {
-  background: #0d1422;
-  border: 1px solid #1e2a3a;
-  border-radius: 30px;
-  color: #e1e3e8;
-  font-size: 12.5px;
-  font-weight: 500;
-  padding: 8px 16px;
-  outline: none;
-  cursor: pointer;
-  font-family: inherit;
-  transition: border-color 0.2s;
-}
-
-.radio_country_select:focus {
-  border-color: #36e2ec;
-}
-
-/* Pílulas de Gêneros */
+/* Pílulas de Filtros Rápidos (Estilo Spotify) */
 .radio_genre_pills {
   display: flex;
   gap: 8px;
-  padding-bottom: 14px;
+  padding-bottom: 16px;
   overflow-x: auto;
   flex-shrink: 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 .radio_genre_pills::-webkit-scrollbar {
@@ -4400,13 +4246,14 @@ header .song_side.radio_mode .radio_page_view {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 500px;
   color: #b3b3b3;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 500;
-  padding: 5px 14px;
+  padding: 6px 16px;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
   font-family: inherit;
+  flex-shrink: 0;
 }
 
 .radio_pill:hover {
@@ -4418,17 +4265,31 @@ header .song_side.radio_mode .radio_page_view {
   background: #36e2ec;
   color: #0b1320;
   border-color: #36e2ec;
-  font-weight: 600;
-  box-shadow: 0 2px 10px rgba(54, 226, 236, 0.3);
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(54, 226, 236, 0.35);
 }
 
-/* Cabeçalho da Seção Ativa */
+/* Listas Empilhadas por País (Estilo Spotify UI) */
+.radio_stacked_sections {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  width: 100%;
+}
+
+.radio_country_section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Cabeçalho da Categoria de País (Idêntico ao título "Playlists" da imagem de referência) */
 .radio_section_header {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 16px;
-  flex-shrink: 0;
+  margin-bottom: 14px;
+  padding-bottom: 6px;
 }
 
 .radio_section_title_group {
@@ -4437,8 +4298,8 @@ header .song_side.radio_mode .radio_page_view {
   gap: 12px;
 }
 
-.radio_section_title_group h2 {
-  font-size: 20px;
+.radio_country_title {
+  font-size: 22px;
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.4px;
@@ -4446,24 +4307,29 @@ header .song_side.radio_mode .radio_page_view {
 
 .radio_section_count {
   font-size: 12px;
+  font-weight: 600;
   color: #8b92a5;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px 10px;
+  border-radius: 500px;
 }
 
-/* Grade de Estações de Rádio (Estilo da Imagem de Referência) */
+/* Grade de Estações de Rádio (Estilo Cards da Imagem Anexada) */
 .radio_stations_grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  width: 100%;
 }
 
-/* Card Individual de Rádio */
+/* Card Individual de Rádio (Estilo Spotify: Rounded, Imagem no topo, Título e Subtítulo) */
 .radio_station_card {
   background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 12px;
-  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 14px;
   cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -4471,10 +4337,10 @@ header .song_side.radio_mode .radio_page_view {
 }
 
 .radio_station_card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(54, 226, 236, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(54, 226, 236, 0.3);
   transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55), 0 0 12px rgba(54, 226, 236, 0.15);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55), 0 0 14px rgba(54, 226, 236, 0.12);
 }
 
 .radio_station_card.is_playing {
@@ -4483,26 +4349,26 @@ header .song_side.radio_mode .radio_page_view {
   box-shadow: 0 0 20px rgba(54, 226, 236, 0.35) !important;
 }
 
-/* Caixa da Logo da Rádio */
+/* Caixa da Logo/Imagem da Rádio */
 .radio_logo_box {
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   background: #182234;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .radio_logo_img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 6px;
-  background: #fff;
+  object-fit: cover;
+  background: #182234;
   transition: transform 0.25s ease;
 }
 
@@ -4510,56 +4376,21 @@ header .song_side.radio_mode .radio_page_view {
   transform: scale(1.04);
 }
 
-/* Logo Fallback com Gradiente Vibrante */
-.radio_fallback_logo {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  color: #fff;
-  text-align: center;
-  padding: 8px;
-}
-
-.fallback_initials {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.fallback_fm_tag {
-  font-size: 10px;
-  font-weight: 700;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 2px 6px;
-  border-radius: 4px;
-  letter-spacing: 0.5px;
-}
-
-/* Overlay de Play no Hover (Estilo Imagem Anexada) */
+/* Overlay de Play no Hover (Estilo Spotify: Botão circular no canto inferior direito) */
 .radio_play_overlay {
   position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  right: 8px;
+  bottom: 8px;
   opacity: 0;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  backdrop-filter: blur(2px);
+  transform: translateY(8px);
+  transition: opacity 0.25s cubic-bezier(0.25, 1, 0.5, 1), transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 2;
 }
 
-.radio_station_card:hover .radio_play_overlay {
-  opacity: 1;
-}
-
+.radio_station_card:hover .radio_play_overlay,
 .radio_station_card.is_playing .radio_play_overlay {
   opacity: 1;
-  background: rgba(0, 0, 0, 0.35);
+  transform: translateY(0);
 }
 
 .radio_overlay_circle {
@@ -4571,17 +4402,16 @@ header .song_side.radio_mode .radio_page_view {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(54, 226, 236, 0.5);
-  transform: scale(0.85);
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 12px rgba(54, 226, 236, 0.4);
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 
-.radio_station_card:hover .radio_overlay_circle {
-  transform: scale(1);
+.radio_station_card:hover .radio_overlay_circle:hover {
+  transform: scale(1.08);
+  background: #5cf1fa;
 }
 
 .radio_station_card.is_playing .radio_overlay_circle {
-  transform: scale(1);
   background: #fff;
   color: #0b1320;
 }
@@ -4593,13 +4423,13 @@ header .song_side.radio_mode .radio_page_view {
 }
 
 .radio_card_title {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 .radio_station_card.is_playing .radio_card_title {
@@ -4607,11 +4437,13 @@ header .song_side.radio_mode .radio_page_view {
 }
 
 .radio_card_tags {
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 500;
   color: #8b92a5;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.4;
 }
 
 /* Estados de Carregamento e Vazio */
