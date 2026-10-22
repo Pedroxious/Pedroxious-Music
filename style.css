@@ -5235,6 +5235,1104 @@ header .song_side.library_mode .library_page_view {
   }
 }
 
+/* =============================================================================
+   COMPREHENSIVE MOBILE RESPONSIVE OVERHAUL (Spotify Mobile Reference)
+   Covers: Discover, My Library, Radio, Sidebars, Player, Navigation
+   Portrait & Landscape orientations for phones and small tablets
+   ============================================================================= */
+
+/* ---------- 768px: Primary Mobile Breakpoint ---------- */
+@media (max-width: 768px) {
+
+  /* --- Top Navbar Overhaul --- */
+  header .song_side nav {
+    height: 48px;
+    padding: 0 10px;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  header .song_side nav ul {
+    gap: 6px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  header .song_side nav ul li {
+    font-size: 10px;
+    padding: 0 12px;
+    height: 32px;
+    letter-spacing: 0.3px;
+    box-shadow: none;
+  }
+
+  header .song_side nav .search {
+    width: 120px;
+    height: 32px;
+    padding: 0 10px;
+    font-size: 11px;
+    flex-shrink: 1;
+    min-width: 80px;
+  }
+
+  header .song_side nav .search:focus-within {
+    width: 160px;
+  }
+
+  header .song_side nav .search input {
+    font-size: 11px;
+  }
+
+  header .song_side nav .user {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  /* --- Radio Live Indicator (smaller on mobile) --- */
+  header .song_side.radio_mode nav .radio_nav_live_indicator {
+    font-size: 9px !important;
+    gap: 5px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  header .song_side.radio_mode nav .radio_nav_live_indicator .live_pulse_dot {
+    width: 6px !important;
+    height: 6px !important;
+  }
+
+  /* --- Discover Page --- */
+  header .song_side .content {
+    width: 100%;
+    padding: 16px 14px 8px 14px;
+    margin: 0 auto 4px auto;
+  }
+
+  header .song_side .content h1 {
+    font-size: 17px;
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+
+  header .song_side .content p {
+    font-size: 10px;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  header .song_side .content .buttons {
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  header .song_side .content .buttons button {
+    padding: 5px 14px;
+    font-size: 10.5px;
+  }
+
+  /* Recomendados horizontal scroll */
+  header .song_side .popular_song,
+  header .song_side .popular_artists {
+    padding: 0 14px;
+    margin-bottom: 14px;
+  }
+
+  header .song_side .popular_song .h4,
+  header .song_side .popular_artists .h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  header .song_side .popular_song .pop_song,
+  header .song_side .popular_artists .pop_song {
+    gap: 10px;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  header .song_side .popular_song .pop_song li,
+  header .song_side .popular_artists .pop_song li {
+    min-width: 100px;
+    width: 100px;
+    scroll-snap-align: start;
+  }
+
+  header .song_side .popular_song .pop_song li .img_play,
+  header .song_side .popular_artists .pop_song li .img_play {
+    width: 100px;
+    height: 100px;
+  }
+
+  header .song_side .popular_song .pop_song li h5,
+  header .song_side .popular_artists .pop_song li h5 {
+    width: 100px;
+    font-size: 10px;
+  }
+
+  /* --- Radio Page Mobile --- */
+  .radio_page_view {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .radio_nav_bar {
+    padding: 8px 12px !important;
+    gap: 8px;
+  }
+
+  .radio_nav_bar .spa_title {
+    font-size: 15px !important;
+  }
+
+  .radio_main_content {
+    padding: 10px 12px 80px 12px !important;
+  }
+
+  /* Radio controls bar stacks vertically on mobile */
+  .radio_controls_bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .radio_search_box {
+    max-width: 100% !important;
+    height: 38px !important;
+    padding: 0 14px !important;
+    font-size: 12px !important;
+  }
+
+  .radio_search_box input {
+    font-size: 12px !important;
+  }
+
+  /* Country dropdown full width on mobile */
+  .radio_country_select_container {
+    min-width: 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 38px !important;
+  }
+
+  .radio_select_trigger {
+    padding: 0 14px !important;
+    font-size: 12px !important;
+    border-radius: 20px !important;
+  }
+
+  .radio_trigger_label {
+    font-size: 12px !important;
+  }
+
+  .radio_select_menu {
+    max-height: 240px !important;
+    border-radius: 12px !important;
+  }
+
+  .radio_option {
+    padding: 9px 14px !important;
+    font-size: 12px !important;
+  }
+
+  /* Genre pills - smaller on mobile */
+  .radio_genre_pills {
+    gap: 6px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .radio_pill {
+    font-size: 11px !important;
+    padding: 5px 12px !important;
+  }
+
+  /* Stacked sections mobile */
+  .radio_stacked_sections {
+    gap: 20px !important;
+  }
+
+  .radio_country_title {
+    font-size: 16px !important;
+  }
+
+  .radio_section_subtitle {
+    font-size: 11px !important;
+  }
+
+  /* Station grid: 2 columns on phone */
+  .radio_stations_grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .radio_station_card {
+    padding: 10px !important;
+    border-radius: 8px !important;
+  }
+
+  .radio_card_logo {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .radio_card_title {
+    font-size: 11.5px !important;
+  }
+
+  .radio_card_tags {
+    font-size: 9.5px !important;
+  }
+
+  .radio_overlay_circle {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .radio_overlay_circle svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  /* --- Library Page Mobile --- */
+  .library_page_view {
+    padding-bottom: 130px !important;
+  }
+
+  .library_nav_bar {
+    padding: 10px 12px !important;
+    gap: 8px;
+  }
+
+  .library_nav_bar .spa_title {
+    font-size: 15px !important;
+  }
+
+  .lib_search_wrapper {
+    max-width: 140px;
+  }
+
+  .lib_search_wrapper input {
+    width: 100px !important;
+    font-size: 11px !important;
+  }
+
+  .lib_action_bar {
+    padding: 12px 12px 10px 12px !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .lib_big_play_btn {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .lib_big_play_btn svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .lib_filter_buttons {
+    margin-left: 0 !important;
+    gap: 6px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .lib_filter_chip {
+    font-size: 11px !important;
+    padding: 4px 12px !important;
+  }
+
+  .lib_action_right {
+    gap: 8px;
+  }
+
+  .lib_sort_button {
+    font-size: 11px !important;
+  }
+
+  /* Library table: hide album and date columns, compact layout */
+  .lib_table_container {
+    padding: 0 10px 40px 10px !important;
+  }
+
+  .lib_table_header,
+  .lib_table_row {
+    grid-template-columns: 32px 1fr 36px 50px !important;
+    padding: 6px 4px !important;
+  }
+
+  .lib_table_header .col_album,
+  .lib_table_row .col_album,
+  .lib_table_header .col_date,
+  .lib_table_row .col_date {
+    display: none !important;
+  }
+
+  .lib_table_row .col_thumb {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .lib_table_row .col_track_title {
+    font-size: 12px !important;
+  }
+
+  .lib_table_row .col_track_artist {
+    font-size: 10px !important;
+  }
+
+  .lib_table_row .col_duration {
+    font-size: 11px !important;
+  }
+
+  /* --- Mini-Player Flutuante Aprimorado --- */
+  header .master_play {
+    position: fixed !important;
+    bottom: 60px !important;
+    left: 6px !important;
+    right: 6px !important;
+    width: calc(100% - 12px) !important;
+    height: 54px !important;
+    border-radius: 10px !important;
+    background: rgba(15, 22, 36, 0.97) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    z-index: 999 !important;
+    padding: 0 10px !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.7) !important;
+  }
+
+  header .master_play .player_left {
+    flex: 1;
+    min-width: 0;
+    gap: 8px !important;
+  }
+
+  header .master_play .player_center {
+    display: none !important;
+  }
+
+  header .master_play .player_right {
+    display: none !important;
+  }
+
+  header .master_play img {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 6px !important;
+  }
+
+  header .master_play h5 {
+    max-width: 130px !important;
+    font-size: 12px !important;
+  }
+
+  header .master_play .bar {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 2px !important;
+    border-radius: 10px 10px 0 0 !important;
+    margin: 0 !important;
+  }
+
+  header .master_play .bar .dot {
+    display: none !important;
+  }
+
+  header .master_play .bar input[type="range"] {
+    display: none !important;
+  }
+
+  header .master_play .icon {
+    gap: 8px !important;
+  }
+
+  #shuffle_btn,
+  #prev_btn,
+  #next_btn,
+  #download_music,
+  #currentStart,
+  #currentEnd,
+  header .master_play .vol,
+  header .master_play .wave,
+  header .master_play .progress_row {
+    display: none !important;
+  }
+
+  #play_pause_btn {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: #36e2ec !important;
+    color: #0b1320 !important;
+  }
+
+  #play_pause_btn svg {
+    width: 15px !important;
+    height: 15px !important;
+    color: #0b1320 !important;
+  }
+
+  /* --- Bottom Navigation Bar --- */
+  .mobile_bottom_nav {
+    height: 54px !important;
+    padding: 0 4px !important;
+  }
+
+  .mob_tab {
+    font-size: 9.5px;
+    gap: 2px;
+  }
+
+  .mob_tab svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* --- Right Sidebar (Now Playing) as Full-Screen Bottom Sheet --- */
+  header .right_side {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    z-index: 1300 !important;
+    background: #0b0e1a !important;
+    transform: translateY(100%) !important;
+    transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1) !important;
+    border-left: none !important;
+    padding-bottom: 60px !important;
+  }
+
+  header .right_side.active {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    padding: 16px 14px 80px 14px !important;
+  }
+
+  header .right_side .right_header {
+    margin-bottom: 12px !important;
+  }
+
+  header .right_side .right_header h4 {
+    font-size: 16px !important;
+  }
+
+  /* Now Playing cover bigger on mobile */
+  header .right_side .now_playing_cover,
+  header .right_side .right_song_side img {
+    width: 100% !important;
+    max-width: 280px !important;
+    height: auto !important;
+    border-radius: 12px !important;
+    margin: 0 auto 16px auto !important;
+    display: block !important;
+  }
+
+  /* --- Left Sidebar Drawer (Menu Side) --- */
+  header .menu_side {
+    width: 82% !important;
+    max-width: 300px !important;
+    padding-bottom: 70px !important;
+  }
+
+  header .menu_side .library_header {
+    padding: 12px 14px !important;
+  }
+
+  header .menu_side .create_playlist_btn {
+    margin: 0 12px 8px 12px !important;
+    padding: 10px 14px !important;
+    font-size: 12px !important;
+  }
+
+  /* --- Overlay / Backdrop for Drawers --- */
+  .mobile_drawer_backdrop.active {
+    z-index: 1150 !important;
+  }
+
+  /* --- Playlist Modal on Mobile --- */
+  .playlist_modal.advanced_modal {
+    max-width: 92% !important;
+    padding: 14px !important;
+  }
+
+  .advanced_modal .modal_body {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .modal_cover_section,
+  .modal_cover_box {
+    width: 120px !important;
+    height: 120px !important;
+  }
+
+  .modal_form_section {
+    width: 100% !important;
+  }
+
+  /* --- Artist & Playlist Pages Mobile --- */
+  .artist_hero_banner,
+  .playlist_hero_banner {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 16px 12px !important;
+    gap: 10px !important;
+  }
+
+  .artist_hero_photo_wrapper,
+  .playlist_hero_cover_wrapper {
+    width: 120px !important;
+    height: 120px !important;
+    margin: 0 auto !important;
+  }
+
+  .artist_hero_info h1,
+  .playlist_hero_title {
+    font-size: 18px !important;
+  }
+
+  .artist_hero_info p,
+  .playlist_hero_desc {
+    font-size: 11px !important;
+  }
+
+  .artist_actions_bar,
+  .playlist_actions_bar {
+    justify-content: center !important;
+    gap: 10px !important;
+    padding: 0 12px 12px 12px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .artist_track_row,
+  .playlist_track_row {
+    padding: 7px 6px !important;
+  }
+
+  .track_thumb {
+    width: 34px !important;
+    height: 34px !important;
+    margin: 0 6px !important;
+  }
+
+  .track_title {
+    font-size: 12px !important;
+  }
+
+  .track_artist {
+    font-size: 10px !important;
+  }
+
+  .track_plays {
+    display: none !important;
+  }
+
+  .track_duration {
+    font-size: 11px !important;
+  }
+}
+
+/* ---------- 480px: Ultra Compact Phones ---------- */
+@media (max-width: 480px) {
+
+  header .song_side nav ul {
+    gap: 4px !important;
+  }
+
+  header .song_side nav ul li {
+    font-size: 9px !important;
+    padding: 0 10px !important;
+    height: 30px !important;
+  }
+
+  header .song_side nav .search {
+    width: 90px !important;
+    height: 30px !important;
+    padding: 0 8px !important;
+  }
+
+  header .song_side nav .search:focus-within {
+    width: 130px !important;
+  }
+
+  header .song_side nav .search input {
+    font-size: 10px !important;
+  }
+
+  header .song_side .content h1 {
+    font-size: 15px !important;
+  }
+
+  header .song_side .popular_song .pop_song li,
+  header .song_side .popular_artists .pop_song li {
+    min-width: 88px !important;
+    width: 88px !important;
+  }
+
+  header .song_side .popular_song .pop_song li .img_play,
+  header .song_side .popular_artists .pop_song li .img_play {
+    width: 88px !important;
+    height: 88px !important;
+  }
+
+  header .song_side .popular_song .pop_song li h5,
+  header .song_side .popular_artists .pop_song li h5 {
+    width: 88px !important;
+    font-size: 9.5px !important;
+  }
+
+  /* Radio ultra compact */
+  .radio_stations_grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  .radio_station_card {
+    padding: 8px !important;
+  }
+
+  .radio_card_logo {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .radio_card_title {
+    font-size: 10.5px !important;
+  }
+
+  .radio_country_title {
+    font-size: 14px !important;
+  }
+
+  /* Library ultra compact */
+  .lib_table_header,
+  .lib_table_row {
+    grid-template-columns: 28px 1fr 30px 44px !important;
+  }
+
+  .lib_table_row .col_thumb {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .lib_table_row .col_track_title {
+    font-size: 11px !important;
+  }
+
+  .lib_action_bar {
+    padding: 10px 10px 8px 10px !important;
+  }
+
+  .lib_big_play_btn {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .lib_filter_chip {
+    font-size: 10px !important;
+    padding: 3px 10px !important;
+  }
+
+  /* Mini-player smaller */
+  header .master_play {
+    height: 50px !important;
+    bottom: 54px !important;
+  }
+
+  header .master_play img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  header .master_play h5 {
+    font-size: 11px !important;
+    max-width: 100px !important;
+  }
+
+  #play_pause_btn {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  #play_pause_btn svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .mobile_bottom_nav {
+    height: 50px !important;
+  }
+
+  .mob_tab {
+    font-size: 9px !important;
+  }
+
+  .mob_tab svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* Artist/Playlist compact */
+  .artist_hero_photo_wrapper,
+  .playlist_hero_cover_wrapper {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  .artist_hero_info h1,
+  .playlist_hero_title {
+    font-size: 16px !important;
+  }
+}
+
+/* ---------- 360px: Very Small Phones ---------- */
+@media (max-width: 360px) {
+
+  header .song_side nav {
+    padding: 0 6px !important;
+  }
+
+  header .song_side nav ul li {
+    font-size: 8.5px !important;
+    padding: 0 8px !important;
+    height: 28px !important;
+  }
+
+  header .song_side nav .search {
+    width: 70px !important;
+    min-width: 60px !important;
+  }
+
+  header .song_side .content h1 {
+    font-size: 14px !important;
+  }
+
+  header .song_side .popular_song .pop_song li,
+  header .song_side .popular_artists .pop_song li {
+    min-width: 78px !important;
+    width: 78px !important;
+  }
+
+  .radio_stations_grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 4px !important;
+  }
+
+  .radio_station_card {
+    padding: 6px !important;
+  }
+
+  .radio_card_title {
+    font-size: 9.5px !important;
+  }
+
+  .radio_card_logo {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .lib_table_header,
+  .lib_table_row {
+    grid-template-columns: 24px 1fr 30px 40px !important;
+  }
+}
+
+/* ---------- Landscape Mode for Phones ---------- */
+@media (max-width: 926px) and (orientation: landscape) and (max-height: 500px) {
+
+  /* In landscape, the viewport is very short but wide */
+  header .song_side {
+    padding-bottom: 110px !important;
+  }
+
+  /* Top nav thinner */
+  header .song_side nav {
+    height: 40px !important;
+    padding: 0 12px !important;
+  }
+
+  header .song_side nav ul li {
+    font-size: 10px !important;
+    height: 28px !important;
+    padding: 0 10px !important;
+  }
+
+  header .song_side nav .search {
+    width: 160px !important;
+    height: 28px !important;
+  }
+
+  header .song_side nav .search:focus-within {
+    width: 200px !important;
+  }
+
+  /* Discover content compact */
+  header .song_side .content {
+    padding: 8px 14px 4px 14px !important;
+    margin: 0 auto 2px auto !important;
+  }
+
+  header .song_side .content h1 {
+    font-size: 15px !important;
+  }
+
+  header .song_side .content p {
+    -webkit-line-clamp: 1 !important;
+    font-size: 10px !important;
+  }
+
+  header .song_side .popular_song,
+  header .song_side .popular_artists {
+    padding: 0 14px !important;
+    margin-bottom: 10px !important;
+  }
+
+  header .song_side .popular_song .pop_song,
+  header .song_side .popular_artists .pop_song {
+    height: 100px !important;
+    gap: 8px !important;
+  }
+
+  header .song_side .popular_song .pop_song li,
+  header .song_side .popular_artists .pop_song li {
+    min-width: 75px !important;
+    width: 75px !important;
+  }
+
+  header .song_side .popular_song .pop_song li .img_play,
+  header .song_side .popular_artists .pop_song li .img_play {
+    width: 75px !important;
+    height: 75px !important;
+  }
+
+  header .song_side .popular_song .pop_song li h5,
+  header .song_side .popular_artists .pop_song li h5 {
+    font-size: 9px !important;
+  }
+
+  /* Radio page landscape */
+  .radio_nav_bar {
+    padding: 6px 12px !important;
+  }
+
+  .radio_main_content {
+    padding: 8px 12px 80px 12px !important;
+  }
+
+  .radio_controls_bar {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .radio_country_select_container {
+    min-width: 170px !important;
+    max-width: 200px !important;
+    width: auto !important;
+    height: 34px !important;
+  }
+
+  .radio_search_box {
+    height: 34px !important;
+  }
+
+  .radio_genre_pills {
+    padding-bottom: 8px !important;
+  }
+
+  .radio_pill {
+    font-size: 10px !important;
+    padding: 4px 10px !important;
+  }
+
+  .radio_stacked_sections {
+    gap: 14px !important;
+  }
+
+  /* In landscape phones we can use 3+ columns */
+  .radio_stations_grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .radio_station_card {
+    padding: 8px !important;
+  }
+
+  .radio_card_logo {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  /* Library landscape */
+  .library_nav_bar {
+    padding: 6px 12px !important;
+  }
+
+  .lib_action_bar {
+    padding: 8px 14px !important;
+  }
+
+  .lib_big_play_btn {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .lib_table_header,
+  .lib_table_row {
+    grid-template-columns: 32px 1fr 40px 56px !important;
+  }
+
+  .lib_table_header .col_album,
+  .lib_table_row .col_album,
+  .lib_table_header .col_date,
+  .lib_table_row .col_date {
+    display: none !important;
+  }
+
+  .lib_table_row .col_thumb {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  /* Mini-player landscape */
+  header .master_play {
+    bottom: 48px !important;
+    height: 44px !important;
+    left: 8px !important;
+    right: 8px !important;
+    width: calc(100% - 16px) !important;
+  }
+
+  header .master_play img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  header .master_play h5 {
+    font-size: 11px !important;
+    max-width: 150px !important;
+  }
+
+  /* Bottom nav thinner in landscape */
+  .mobile_bottom_nav {
+    height: 44px !important;
+  }
+
+  .mob_tab {
+    font-size: 9px !important;
+    gap: 1px !important;
+  }
+
+  .mob_tab svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* Right sidebar landscape: side panel instead of full screen */
+  header .right_side {
+    width: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+    left: auto !important;
+    right: 0 !important;
+    transform: translateX(100%) !important;
+  }
+
+  header .right_side.active {
+    transform: translateX(0) !important;
+    padding: 12px 14px 60px 14px !important;
+  }
+
+  /* Artist/Playlist landscape: side-by-side hero */
+  .artist_hero_banner,
+  .playlist_hero_banner {
+    flex-direction: row !important;
+    text-align: left !important;
+    padding: 12px !important;
+    gap: 14px !important;
+  }
+
+  .artist_hero_photo_wrapper,
+  .playlist_hero_cover_wrapper {
+    width: 100px !important;
+    height: 100px !important;
+    margin: 0 !important;
+  }
+
+  .artist_hero_info h1,
+  .playlist_hero_title {
+    font-size: 17px !important;
+  }
+}
+
+/* ---------- Tablet Portrait (769px - 1024px) Additional Refinements ---------- */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  header .song_side nav .search {
+    width: 200px;
+  }
+
+  header .song_side nav .search:focus-within {
+    width: 260px;
+  }
+
+  /* Radio controls stay horizontal on tablet */
+  .radio_controls_bar {
+    flex-direction: row !important;
+  }
+
+  .radio_country_select_container {
+    min-width: 180px !important;
+    max-width: 220px !important;
+  }
+
+  /* 3 columns on tablet */
+  .radio_stations_grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* Library table: hide date col */
+  .lib_table_header .col_date,
+  .lib_table_row .col_date {
+    display: none;
+  }
+}
+
+/* ---------- Safe area (notch) support for modern phones ---------- */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  @media (max-width: 768px) {
+    .mobile_bottom_nav {
+      padding-bottom: env(safe-area-inset-bottom) !important;
+      height: calc(54px + env(safe-area-inset-bottom)) !important;
+    }
+
+    header .master_play {
+      bottom: calc(54px + env(safe-area-inset-bottom) + 4px) !important;
+    }
+
+    header .song_side {
+      padding-bottom: calc(128px + env(safe-area-inset-bottom)) !important;
+    }
+  }
+}
+
 /* ===== Pastas de Álbuns na Navbar Esquerda (Explorador de Arquivos) ===== */
 .custom_folders_container {
   display: flex;
