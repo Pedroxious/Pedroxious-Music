@@ -4072,15 +4072,33 @@ header .song_side.radio_mode .popular_artists {
   display: none !important;
 }
 
-/* Oculta a barra de pesquisa da navbar superior no modo rádio */
+/* Oculta a barra de pesquisa da navbar superior EXCLUSIVAMENTE no modo rádio */
 header .song_side.radio_mode nav .search,
 header .song_side.radio_mode #search_bar_container {
   display: none !important;
 }
 
-/* Indicador "RADIO ONLINE AO VIVO" na navbar superior ao lado da foto de perfil */
-header .song_side nav .radio_nav_live_indicator {
-  display: none;
+/* Mantém a barra de pesquisa sempre visível e em sua posição original em Discover, My Library e demais páginas */
+header .song_side:not(.radio_mode) nav .search,
+header .song_side.library_mode nav .search,
+header .song_side.artist_mode nav .search,
+header .song_side.playlist_mode nav .search {
+  display: flex !important;
+  margin-left: auto;
+  margin-right: 18px;
+}
+
+/* Indicador "RADIO ONLINE AO VIVO" na navbar superior: SOMENTE visível na página de Rádio */
+header .song_side nav .radio_nav_live_indicator,
+header .song_side:not(.radio_mode) nav .radio_nav_live_indicator,
+header .song_side.library_mode nav .radio_nav_live_indicator,
+header .song_side.artist_mode nav .radio_nav_live_indicator,
+header .song_side.playlist_mode nav .radio_nav_live_indicator {
+  display: none !important;
+}
+
+header .song_side.radio_mode nav .radio_nav_live_indicator {
+  display: flex !important;
   align-items: center;
   gap: 8px;
   font-size: 11px;
@@ -4095,10 +4113,6 @@ header .song_side nav .radio_nav_live_indicator {
   margin-left: auto;
   margin-right: 18px;
   user-select: none;
-}
-
-header .song_side.radio_mode nav .radio_nav_live_indicator {
-  display: flex !important;
 }
 
 header .song_side.radio_mode .artist_page_view {

@@ -1577,6 +1577,7 @@ function openPlaylistPage(plId) {
         songSideContainer.classList.remove('library_mode');
         songSideContainer.classList.add('playlist_mode');
     }
+    updateNavLiveIndicator();
 
     const plPageView = document.getElementById('playlist_page_view');
     if (plPageView) plPageView.style.display = 'flex';
@@ -1711,9 +1712,7 @@ function returnToHomeView() {
         songSideContainer.classList.remove('library_mode');
     }
 
-    // Restaura a visibilidade e funcionalidade da barra de pesquisa da navbar superior
-    const navSearch = document.getElementById('search_bar_container');
-    if (navSearch) navSearch.style.display = '';
+    updateNavLiveIndicator();
 
     if (artistPageView) artistPageView.style.display = 'none';
     const plPageView = document.getElementById('playlist_page_view');
@@ -3258,6 +3257,7 @@ function openArtistPage() {
         songSideContainer.classList.remove('library_mode');
         songSideContainer.classList.add('artist_mode');
     }
+    updateNavLiveIndicator();
     if (artistPageView) artistPageView.style.display = 'flex';
     setActiveNavTab('discover');
 
@@ -5630,6 +5630,20 @@ function handleRadioError(station) {
 }
 
 // Abre a Visualização da Rádio em SPA
+// Sincroniza a visibilidade do indicador de rádio ao vivo e da barra de busca na navbar
+function updateNavLiveIndicator() {
+    const isRadio = songSideContainer && songSideContainer.classList.contains('radio_mode');
+    const navLiveBadge = document.getElementById('radio_nav_live_indicator');
+    const navSearch = document.getElementById('search_bar_container');
+
+    if (navLiveBadge) {
+        navLiveBadge.style.display = isRadio ? 'flex' : 'none';
+    }
+    if (navSearch) {
+        navSearch.style.display = isRadio ? 'none' : '';
+    }
+}
+
 function openRadioView() {
     activePlaylistId = null;
     if (songSideContainer) {
@@ -5639,13 +5653,7 @@ function openRadioView() {
         songSideContainer.classList.add('radio_mode');
     }
 
-    // Oculta a barra de pesquisa da navbar superior conforme exigido
-    const navSearch = document.getElementById('search_bar_container');
-    if (navSearch) navSearch.style.display = 'none';
-
-    // Exibe o badge 'RADIO ONLINE AO VIVO' na navbar superior ao lado do avatar
-    const navLiveBadge = document.getElementById('radio_nav_live_indicator');
-    if (navLiveBadge) navLiveBadge.style.display = 'flex';
+    updateNavLiveIndicator();
 
     if (artistPageView) artistPageView.style.display = 'none';
     const plPageView = document.getElementById('playlist_page_view');
@@ -5849,6 +5857,12 @@ if (radioResetBtn) {
 setupRadioCountrySelect();
 setupRadioGenrePills();
 renderStackedRadioSections();
+updateNavLiveIndicator();
+
+// Estado da Biblioteca Musical (Spotify Desktop UI)
+let currentLibraryFilter = 'all'; // 'all' | 'favorites'
+let currentLibrarySearch = '';
+let currentLibrarySort = 'date';  // 'date' | 'name' | 'artist' | 'album' | 'duration' | 'custom'
 
 function openLibraryView() {
     activePlaylistId = null;
@@ -5859,9 +5873,7 @@ function openLibraryView() {
         songSideContainer.classList.add('library_mode');
     }
 
-    // Restaura a visibilidade da barra de busca da navbar superior
-    const navSearch = document.getElementById('search_bar_container');
-    if (navSearch) navSearch.style.display = '';
+    updateNavLiveIndicator();
 
     if (artistPageView) artistPageView.style.display = 'none';
     const plPageView = document.getElementById('playlist_page_view');
