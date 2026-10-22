@@ -627,7 +627,7 @@ header .song_side nav ul li.active {
 header .song_side nav .search {
   position: relative;
   z-index: 1000;
-  width: 210px;
+  width: 280px;
   height: 38px;
   padding: 0 14px;
   box-sizing: border-box;
@@ -643,7 +643,7 @@ header .song_side nav .search {
 }
 
 header .song_side nav .search:focus-within {
-  width: 270px;
+  width: 340px;
   border-color: #36e2ec;
   box-shadow: 0 0 14px rgba(54, 226, 236, 0.25);
 }
@@ -4084,7 +4084,6 @@ header .song_side.library_mode nav .search,
 header .song_side.artist_mode nav .search,
 header .song_side.playlist_mode nav .search {
   display: flex !important;
-  margin-right: auto;
 }
 
 /* Indicador "RADIO ONLINE AO VIVO" na navbar superior: SOMENTE visível na página de Rádio */
