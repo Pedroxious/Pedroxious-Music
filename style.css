@@ -5614,7 +5614,9 @@ header .song_side.library_mode .library_page_view {
   }
 
   header .master_play .player_center {
-    display: none !important;
+    flex: 0 !important;
+    min-width: auto !important;
+    max-width: fit-content !important;
   }
 
   header .master_play .player_right {
@@ -5652,19 +5654,11 @@ header .song_side.library_mode .library_page_view {
   }
 
   header .master_play .icon {
-    gap: 8px !important;
-  }
-
-  #shuffle_btn,
-  #prev_btn,
-  #next_btn,
-  #download_music,
-  #currentStart,
-  #currentEnd,
-  header .master_play .vol,
-  header .master_play .wave,
-  header .master_play .progress_row {
-    display: none !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
   }
 
   #play_pause_btn {
@@ -5673,12 +5667,36 @@ header .song_side.library_mode .library_page_view {
     border-radius: 50% !important;
     background: #36e2ec !important;
     color: #0b1320 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
   }
 
   #play_pause_btn svg {
     width: 15px !important;
     height: 15px !important;
     color: #0b1320 !important;
+  }
+
+  /* Show next button on mobile mini-player for quick skip */
+  #next_btn {
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    color: #b3b3b3 !important;
+    cursor: pointer !important;
+  }
+
+  #shuffle_btn,
+  #prev_btn,
+  #download_music,
+  #currentStart,
+  #currentEnd,
+  header .master_play .vol,
+  header .master_play .wave,
+  header .master_play .progress_row {
+    display: none !important;
   }
 
   /* --- Bottom Navigation Bar --- */
