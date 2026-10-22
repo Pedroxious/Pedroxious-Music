@@ -5244,61 +5244,61 @@ header .song_side.library_mode .library_page_view {
 /* ---------- 768px: Primary Mobile Breakpoint ---------- */
 @media (max-width: 768px) {
 
-  /* --- Top Navbar Overhaul --- */
+  /* --- Top Navbar Overhaul (Mobile: hide tabs, keep search + avatar only) --- */
   header .song_side nav {
     height: 48px;
-    padding: 0 10px;
-    gap: 6px;
+    padding: 0 14px;
+    gap: 10px;
     flex-wrap: nowrap;
+    justify-content: center;
   }
 
+  /* Hide Discover / My Library / Radio tabs on mobile (bottom nav handles this) */
   header .song_side nav ul {
-    gap: 6px;
-    margin: 0;
-    flex-shrink: 0;
+    display: none !important;
   }
 
-  header .song_side nav ul li {
-    font-size: 10px;
-    padding: 0 12px;
-    height: 32px;
-    letter-spacing: 0.3px;
-    box-shadow: none;
+  /* Hide the RADIO ONLINE AO VIVO indicator on mobile navbar (redundant) */
+  header .song_side nav .radio_nav_live_indicator {
+    display: none !important;
   }
 
+  /* Search bar wider and centered on mobile since tabs are gone */
   header .song_side nav .search {
-    width: 120px;
-    height: 32px;
-    padding: 0 10px;
-    font-size: 11px;
-    flex-shrink: 1;
-    min-width: 80px;
+    flex: 1 !important;
+    width: auto !important;
+    max-width: 400px;
+    height: 36px;
+    padding: 0 14px;
+    font-size: 12px;
+    min-width: 0;
   }
 
   header .song_side nav .search:focus-within {
-    width: 160px;
+    width: auto !important;
+    max-width: 400px;
+    border-color: #36e2ec;
+    box-shadow: 0 0 12px rgba(54, 226, 236, 0.25);
   }
 
   header .song_side nav .search input {
-    font-size: 11px;
+    font-size: 12px;
+  }
+
+  /* Hide search bar on Radio page (mobile) - radio has its own search */
+  header .song_side.radio_mode nav .search {
+    display: none !important;
   }
 
   header .song_side nav .user {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     flex-shrink: 0;
   }
 
-  /* --- Radio Live Indicator (smaller on mobile) --- */
-  header .song_side.radio_mode nav .radio_nav_live_indicator {
-    font-size: 9px !important;
-    gap: 5px !important;
-    letter-spacing: 0.5px !important;
-  }
-
-  header .song_side.radio_mode nav .radio_nav_live_indicator .live_pulse_dot {
-    width: 6px !important;
-    height: 6px !important;
+  /* Hide hamburger toggle too since bottom nav replaces it */
+  .mob_menu_toggle {
+    display: none !important;
   }
 
   /* --- Discover Page --- */
@@ -5462,38 +5462,59 @@ header .song_side.library_mode .library_page_view {
     font-size: 11px !important;
   }
 
-  /* Station grid: 2 columns on phone */
+  /* Station grid: compact list-style on phone (not giant cards) */
   .radio_stations_grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
+    grid-template-columns: 1fr !important;
+    gap: 4px !important;
   }
 
   .radio_station_card {
-    padding: 10px !important;
+    padding: 8px 10px !important;
     border-radius: 8px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
   }
 
-  .radio_card_logo {
-    width: 42px !important;
-    height: 42px !important;
+  /* Logo box: small circle instead of large square */
+  .radio_station_card .radio_logo_box {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    aspect-ratio: auto !important;
+    border-radius: 6px !important;
+    margin-bottom: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .radio_station_card .radio_card_info {
+    flex: 1 !important;
+    min-width: 0 !important;
   }
 
   .radio_card_title {
-    font-size: 11.5px !important;
+    font-size: 12px !important;
+    margin-bottom: 1px !important;
   }
 
   .radio_card_tags {
-    font-size: 9.5px !important;
+    font-size: 10px !important;
+  }
+
+  /* Play overlay: smaller on compact cards */
+  .radio_play_overlay {
+    right: 4px !important;
+    bottom: 4px !important;
   }
 
   .radio_overlay_circle {
-    width: 32px !important;
-    height: 32px !important;
+    width: 28px !important;
+    height: 28px !important;
   }
 
   .radio_overlay_circle svg {
-    width: 14px !important;
-    height: 14px !important;
+    width: 12px !important;
+    height: 12px !important;
   }
 
   /* --- Library Page Mobile --- */
@@ -5867,24 +5888,9 @@ header .song_side.library_mode .library_page_view {
 /* ---------- 480px: Ultra Compact Phones ---------- */
 @media (max-width: 480px) {
 
-  header .song_side nav ul {
-    gap: 4px !important;
-  }
-
-  header .song_side nav ul li {
-    font-size: 9px !important;
-    padding: 0 10px !important;
-    height: 30px !important;
-  }
-
   header .song_side nav .search {
-    width: 90px !important;
-    height: 30px !important;
-    padding: 0 8px !important;
-  }
-
-  header .song_side nav .search:focus-within {
-    width: 130px !important;
+    height: 32px !important;
+    padding: 0 10px !important;
   }
 
   header .song_side nav .search input {
@@ -5913,23 +5919,19 @@ header .song_side.library_mode .library_page_view {
     font-size: 9.5px !important;
   }
 
-  /* Radio ultra compact */
-  .radio_stations_grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6px !important;
-  }
-
-  .radio_station_card {
-    padding: 8px !important;
-  }
-
-  .radio_card_logo {
-    width: 36px !important;
-    height: 36px !important;
+  /* Radio ultra compact - keep list layout */
+  .radio_station_card .radio_logo_box {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
   }
 
   .radio_card_title {
-    font-size: 10.5px !important;
+    font-size: 11px !important;
+  }
+
+  .radio_card_tags {
+    font-size: 9px !important;
   }
 
   .radio_country_title {
@@ -6021,18 +6023,11 @@ header .song_side.library_mode .library_page_view {
 @media (max-width: 360px) {
 
   header .song_side nav {
-    padding: 0 6px !important;
-  }
-
-  header .song_side nav ul li {
-    font-size: 8.5px !important;
     padding: 0 8px !important;
-    height: 28px !important;
   }
 
   header .song_side nav .search {
-    width: 70px !important;
-    min-width: 60px !important;
+    height: 32px !important;
   }
 
   header .song_side .content h1 {
@@ -6045,22 +6040,15 @@ header .song_side.library_mode .library_page_view {
     width: 78px !important;
   }
 
-  .radio_stations_grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 4px !important;
-  }
-
-  .radio_station_card {
-    padding: 6px !important;
+  /* Radio compact cards even smaller */
+  .radio_station_card .radio_logo_box {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
   }
 
   .radio_card_title {
-    font-size: 9.5px !important;
-  }
-
-  .radio_card_logo {
-    width: 30px !important;
-    height: 30px !important;
+    font-size: 10px !important;
   }
 
   .lib_table_header,
