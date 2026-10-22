@@ -4084,6 +4084,7 @@ header .song_side.library_mode nav .search,
 header .song_side.artist_mode nav .search,
 header .song_side.playlist_mode nav .search {
   display: flex !important;
+  margin-right: auto;
 }
 
 /* Indicador "RADIO ONLINE AO VIVO" na navbar superior: SOMENTE visível na página de Rádio */
